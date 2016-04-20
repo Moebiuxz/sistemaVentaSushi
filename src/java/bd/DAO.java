@@ -19,7 +19,7 @@ public class DAO {
     
     public Usuario getUsuario(Usuario u) throws SQLException {
         Usuario user = null;
-        sql = "SELECT * FROM usuario WHERE usuario_nombre = '" + u.getNombre()+ "' AND usuario_clave = '" + u.getPassword()+ "'";
+        sql = "SELECT * FROM usuario WHERE usuario_nombre = '" + u.getNombre()+ "' AND usuario_clave = AES_ENCRYPT('"+u.getPassword()+"',666)";
         C.resultado = C.ejecutarSelect(sql);
         if (C.resultado.next()) {
             user = new Usuario(
@@ -31,12 +31,13 @@ public class DAO {
             );
         }
         C.sentencia.close();
+        System.out.println(u.getNombre());
         return user;
     }
     
     public TipoUsuario getTipoUsuario(int id) throws SQLException{
         TipoUsuario tipo = null;
-        sql = "SELECT * FROM tipoUsuario WHERE tipoUsuario_id = '"+tipo.getId()+"'";
+        sql = "SELECT * FROM tipoUsuario WHERE tipoUsuario_id = '"+id+"'";
         C.resultado = C.ejecutarSelect(sql);
         if (C.resultado.next()) {
             tipo = new TipoUsuario(C.resultado.getInt(1), C.resultado.getString(2), C.resultado.getInt(3));
