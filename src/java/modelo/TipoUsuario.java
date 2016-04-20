@@ -1,9 +1,11 @@
 package modelo;
 
 public class TipoUsuario {
+
     private int id;
     private String nombre;
     private int estado; /*1.Activo, 2.Inactivo.*/
+
 
     public TipoUsuario() {
     }
@@ -37,6 +39,5 @@ public class TipoUsuario {
     public void setEstado(int estado) {
         this.estado = estado;
     }
-    
-    
+
 }

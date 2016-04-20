@@ -1,11 +1,13 @@
 package modelo;
 
 public class Usuario {
+
     private int id;
     private String nombre;
     private String password;
     private int tipoUsuario;
     private int estado; /*1.Activo, 2.Inactivo.*/
+
 
     public Usuario() {
     }
@@ -57,6 +59,5 @@ public class Usuario {
     public void setEstado(int estado) {
         this.estado = estado;
     }
-    
-    
+
 }
