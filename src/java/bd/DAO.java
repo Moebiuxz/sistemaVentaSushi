@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.Cliente;
 import modelo.Personal;
+import modelo.Producto;
 import modelo.TipoPersonal;
 import modelo.TipoProducto;
 import modelo.TipoUsuario;
@@ -15,7 +16,8 @@ public class DAO {
 
     public final Conexion C;
     private String sql;
-
+    private List<Producto> productos;
+    
     public DAO() throws SQLException {
         C = new Conexion(
                 DatosConexion.SERVER,
@@ -630,7 +632,7 @@ public class DAO {
     }
 
     public List<TipoProducto> getTiposProductos() throws SQLException {
-        sql = "SELECT * FROM tipoProducto;";
+        sql = "SELECT * FROM tipoProducto WHERE tipoProducto_estado = 1";
         C.resultado = C.ejecutarSelect(sql);
         TipoProducto tipo;
         List<TipoProducto> listaTipo = new ArrayList<>();
@@ -655,9 +657,55 @@ public class DAO {
     /*
      Inicio Métodos producto
      */
+    public List<Producto> getProductos() throws SQLException{
+        productos = new ArrayList<>();
+        sql = "SELECT * FROM producto WHERE producto_estado = 1";
+        C.resultado = C.ejecutarSelect(sql);
+        Producto p;
+        while (C.resultado.next()) {
+            p = new Producto();
+            p.setId(C.resultado.getInt(1));
+            p.setNombre(C.resultado.getString(2));
+            p.setPrecio(C.resultado.getInt(3));
+            p.setEstado(C.resultado.getInt(4));
+            productos.add(p);
+        }
+        C.sentencia.close();
+        return productos;
+    }
     
-    
+     public void crearProducto(Producto p) throws SQLException {
+        sql = "INSERT INTO producto VALUES("
+                + "NULL,"
+                + "'" + p.getNombre() + "',"
+                + "'" + p.getPrecio() + "',"
+                + "'" + p.getTipo() + "',"
+                + "1"
+                + ");";
+        C.ejecutar(sql);
+    }
      
+     public void eliminarProducto(String id) throws SQLException{
+         sql = "UPDATE producto SET producto_estado = 0 WHERE producto_id = "+id+"";
+         C.ejecutar(sql);
+     }
+     
+     public List<Producto> getProductosLike(String filtro) throws SQLException{
+        productos = new ArrayList<>();
+        sql = "SELECT * FROM producto WHERE producto_estado = 1 and producto_nombre like '%"+filtro+"%'";
+        C.resultado = C.ejecutarSelect(sql);
+        Producto p;
+        while (C.resultado.next()) {
+            p = new Producto();
+            p.setId(C.resultado.getInt(1));
+            p.setNombre(C.resultado.getString(2));
+            p.setPrecio(C.resultado.getInt(3));
+            p.setEstado(C.resultado.getInt(4));
+            productos.add(p);
+        }
+        C.sentencia.close();
+        return productos;
+    }
     /*
      Fin Métodos producto
      */
