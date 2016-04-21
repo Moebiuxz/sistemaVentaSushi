@@ -1,0 +1,30 @@
+.navbar{
+    margin-bottom: 0px;
+}
+
+.main{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.post{
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #999;
+}
+
+.post-title a{
+    color: #333;
+}
+a:hover{
+    text-decoration: none;
+}
+
+.post .thumb{
+    margin-right: 10px;
+    width: 30%;
+}
+
+.post .thumb img{
+    width: 100%;
+}
