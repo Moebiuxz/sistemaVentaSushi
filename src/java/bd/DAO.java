@@ -23,8 +23,8 @@ public class DAO {
     /*
      Inicio Métodos TipoUsuario
      */
-    public void crearTipousuario(TipoUsuario tipo) throws SQLException {
-        sql = "INSERT INTO tipoUsuario VALUES("
+    public void crearTipoUsuario(TipoUsuario tipo) throws SQLException {
+        sql = "insert into tipoUsuario values("
                 + "null,"
                 + "'" + tipo.getNombre() + "',"
                 + "'" + tipo.getEstado() + "'"
@@ -43,21 +43,23 @@ public class DAO {
         return tipo;
     }
 
-    public TipoUsuario getTipoUsuarioLike(String arg) throws SQLException {
+    public List<TipoUsuario> getTipoUsuarioLike(String arg) throws SQLException {
         sql = "select * from tipoUsuario where "
                 + "tipoUsuario_nombre like '%" + arg + "%' "
                 + "or "
                 + "tipoUsuario_id like '%" + arg + "%';";
         C.resultado = C.ejecutarSelect(sql);
-        TipoUsuario tipo = null;
-        if (C.resultado.next()) {
+        TipoUsuario tipo;
+        List<TipoUsuario> listaTipo = new ArrayList<>();
+        while (C.resultado.next()) {
             tipo = new TipoUsuario();
             tipo.setId(C.resultado.getInt(1));
             tipo.setNombre(C.resultado.getString(2));
             tipo.setEstado(C.resultado.getInt(3));
+            listaTipo.add(tipo);
         }
         C.sentencia.close();
-        return tipo;
+        return listaTipo;
     }
 
     public void actualizarTipoUsuario(TipoUsuario tipo) throws SQLException {
@@ -91,7 +93,7 @@ public class DAO {
     }
 
     public List<TipoUsuario> getTiposUsuario() throws SQLException {
-        sql = "SELECT * FROM tipoUsuario;";
+        sql = "select * from tipoUsuario;";
         C.resultado = C.ejecutarSelect(sql);
         TipoUsuario tipo;
         List<TipoUsuario> listaTipo = new ArrayList<>();
@@ -105,9 +107,23 @@ public class DAO {
         C.sentencia.close();
         return listaTipo;
     }
+
     /*
      Fin Métodos TipoUsuario
      */
+    /*
+     Inicio Métodos Usuario
+     */
+    public void crearUsuario(Usuario u) throws SQLException {
+        sql = "insert into usuario values("
+                + "null,"
+                + "'" + u.getNombre() + "',"
+                + "'" + u.getPassword() + "',"
+                + "'" + u.getTipoUsuario() + "',"
+                + "'" + u.getEstado() + "'"
+                + ");";
+        C.ejecutar(sql);
+    }
 
     public Usuario getUsuario(Usuario u) throws SQLException {
         Usuario user = null;
@@ -123,7 +139,81 @@ public class DAO {
             );
         }
         C.sentencia.close();
-        System.out.println(u.getNombre());
         return user;
     }
+
+    /*Para buscar, no para validar con pass*/
+    public List<Usuario> getUsuarioLike(String arg) throws SQLException {
+        sql = "select * from usuario where "
+                + "usuario_nombre like '%" + arg + "%' "
+                + "or "
+                + "usuario_tipo like '%" + arg + "%';";
+        C.resultado = C.ejecutarSelect(sql);
+        Usuario u;
+        List<Usuario> lu = new ArrayList<>();
+        while (C.resultado.next()) {
+            u = new Usuario();
+            u.setId(C.resultado.getInt(1));
+            u.setNombre(C.resultado.getString(2));
+            u.setPassword(C.resultado.getString(3));
+            u.setTipoUsuario(C.resultado.getInt(4));
+            u.setEstado(C.resultado.getInt(5));
+            lu.add(u);
+        }
+        C.sentencia.close();
+        return lu;
+    }
+
+    public void actualizarUsuario(Usuario u) throws SQLException {
+        sql = "update usuario set "
+                + "usuario_nombre = '" + u.getNombre() + "', "
+                + "usuario_clave = '" + u.getPassword() + "', "
+                + "usuario_tipo = '" + u.getTipoUsuario() + "', "
+                + "usuario_estado = '" + u.getEstado() + "' "
+                + "where "
+                + "usuario_id = '" + u.getId() + "';";
+        C.ejecutar(sql);
+    }
+
+    public void desactivarUsuario(int id) throws SQLException {
+        sql = "update usuario set "
+                + "usuario_estado = '0' "
+                + "where "
+                + "usuario_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public void activarUsuario(int id) throws SQLException {
+        sql = "update usuario set "
+                + "usuario_estado = '1' "
+                + "where "
+                + "usuario_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public void eliminarUsuario(int id) throws SQLException {
+        sql = "delete from usuario where usuario_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public List<Usuario> getUsuarios() throws SQLException {
+        sql = "select * from usuario;";
+        C.resultado = C.ejecutarSelect(sql);
+        Usuario u;
+        List<Usuario> lu = new ArrayList<>();
+        while (C.resultado.next()) {
+            u = new Usuario();
+            u.setId(C.resultado.getInt(1));
+            u.setNombre(C.resultado.getString(2));
+            u.setPassword(C.resultado.getString(3));
+            u.setTipoUsuario(C.resultado.getInt(4));
+            u.setEstado(C.resultado.getInt(5));
+            lu.add(u);
+        }
+        C.sentencia.close();
+        return lu;
+    }
+    /*
+     Fin Métodos Usuario
+     */
 }
