@@ -1,6 +1,8 @@
 package bd;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import modelo.TipoUsuario;
 import modelo.Usuario;
 
@@ -19,7 +21,7 @@ public class DAO {
     }
 
     /*
-     Métodos TipoUsuario
+     Inicio Métodos TipoUsuario
      */
     public void crearTipousuario(TipoUsuario tipo) throws SQLException {
         sql = "INSERT INTO tipoUsuario VALUES("
@@ -40,19 +42,73 @@ public class DAO {
         C.sentencia.close();
         return tipo;
     }
-    
-    public void actualizarTipoUsuario(TipoUsuario tipo) throws SQLException{
+
+    public TipoUsuario getTipoUsuarioLike(String arg) throws SQLException {
+        sql = "select * from tipoUsuario where "
+                + "tipoUsuario_nombre like '%" + arg + "%' "
+                + "or "
+                + "tipoUsuario_id like '%" + arg + "%';";
+        C.resultado = C.ejecutarSelect(sql);
+        TipoUsuario tipo = null;
+        if (C.resultado.next()) {
+            tipo = new TipoUsuario();
+            tipo.setId(C.resultado.getInt(1));
+            tipo.setNombre(C.resultado.getString(2));
+            tipo.setEstado(C.resultado.getInt(3));
+        }
+        C.sentencia.close();
+        return tipo;
+    }
+
+    public void actualizarTipoUsuario(TipoUsuario tipo) throws SQLException {
         sql = "update tipoUsuario set "
-                + "tipoUsuario_nombre = '"+tipo.getNombre()+"', "
-                + "tipoUsuario_estado = '"+tipo.getEstado()+"' "
+                + "tipoUsuario_nombre = '" + tipo.getNombre() + "', "
+                + "tipoUsuario_estado = '" + tipo.getEstado() + "' "
                 + "where "
-                + "tipoUsuario_id = '"+tipo.getId()+"';";
+                + "tipoUsuario_id = '" + tipo.getId() + "';";
         C.ejecutar(sql);
     }
 
+    public void desactivarTipoUsuario(int id) throws SQLException {
+        sql = "update tipoUsuario set "
+                + "tipoUsuario_estado = '0' "
+                + "where "
+                + "tipoUsuario_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public void activarTipoUsuario(int id) throws SQLException {
+        sql = "update tipoUsuario set "
+                + "tipoUsuario_estado = '1' "
+                + "where "
+                + "tipoUsuario_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public void eliminarTipoUsuario(int id) throws SQLException {
+        sql = "delete from tipoUsuario where tipoUsuario_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public List<TipoUsuario> getTiposUsuario() throws SQLException {
+        sql = "SELECT * FROM tipoUsuario;";
+        C.resultado = C.ejecutarSelect(sql);
+        TipoUsuario tipo;
+        List<TipoUsuario> listaTipo = new ArrayList<>();
+        while (C.resultado.next()) {
+            tipo = new TipoUsuario();
+            tipo.setId(C.resultado.getInt(1));
+            tipo.setNombre(C.resultado.getString(2));
+            tipo.setEstado(C.resultado.getInt(3));
+            listaTipo.add(tipo);
+        }
+        C.sentencia.close();
+        return listaTipo;
+    }
     /*
-     Métodos TipoUsuario
+     Fin Métodos TipoUsuario
      */
+
     public Usuario getUsuario(Usuario u) throws SQLException {
         Usuario user = null;
         sql = "SELECT * FROM usuario WHERE usuario_nombre = '" + u.getNombre() + "' AND usuario_clave = AES_ENCRYPT('" + u.getPassword() + "',666)";
