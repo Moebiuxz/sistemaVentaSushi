@@ -9,6 +9,9 @@ String menu = "";
 String crearUsuario = "";
 String listarPersonal = "";
 String listarUsuarios = "";
+String listarProductos = "";
+String crearProducto = "";
+
 
 
 if(StaticPage.PAGINA == EnumPaginas.MENU){
@@ -20,6 +23,10 @@ if(StaticPage.PAGINA == EnumPaginas.MENU){
 }else if(StaticPage.PAGINA == EnumPaginas.LISTAR_PERSONAL){
     listarPersonal = "active";
 }else if(StaticPage.PAGINA == EnumPaginas.LISTAR_USUARIOS){
+    listarUsuarios = "active";
+}else if(StaticPage.PAGINA == EnumPaginas.LISTAR_PRODUCTOS){
+    listarUsuarios = "active";
+}else if(StaticPage.PAGINA == EnumPaginas.CREAR_PRODUCTO){
     listarUsuarios = "active";
 }
 %>
@@ -47,6 +54,8 @@ if(StaticPage.PAGINA == EnumPaginas.MENU){
                     out.println("<li class='"+cocinero+"'><a href=''>Crear Cocinero</a></li>");
                     out.println("<li class='"+crearUsuario+"'><a href='registrarUsuario.jsp'>Registrar Usuario</a></li>");   
                     out.println("<li class='"+listarUsuarios+"'><a href='listarUsuarios.jsp'>Listar Usuarios</a></li>");   
+                    out.println("<li class='"+crearProducto+"'><a href='registrarProducto.jsp'>Crear Producto</a></li>");   
+                    out.println("<li class='"+listarUsuarios+"'><a href='listarProducto.jsp'>Listar Productos</a></li>");   
                 }else if(u != null && u.getTipoUsuario() == 2){
                     
                 }

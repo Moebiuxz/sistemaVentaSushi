@@ -1,10 +1,12 @@
 CREATE DATABASE bd_sushi;
 USE bd_sushi;
 
+--DROP DATABASE bd_sushi;
+
 CREATE TABLE tipoUsuario (
 	tipoUsuario_id INT AUTO_INCREMENT,
 	tipoUsuario_nombre VARCHAR(100),
-	tipoUsuario_estado BIT, /*1.Activo 2.Inactivo*/
+	tipoUsuario_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(tipoUsuario_id)
 );
 
@@ -17,20 +19,21 @@ CREATE TABLE usuario(
 	usuario_nombre VARCHAR(100),
 	usuario_clave BLOB,
 	usuario_tipo INT,
-	usuario_estado BIT, /*1.Activo 2.Inactivo*/
+	usuario_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(usuario_id),
 	FOREIGN KEY(usuario_tipo) REFERENCES tipoUsuario(tipoUsuario_id)
 );
 
 /*INSERT por defecto*/
 INSERT INTO usuario VALUES (NULL, 'admin', AES_ENCRYPT('admin',666), 1, 1);
+INSERT INTO usuario VALUES (NULL, 'Vendedor1', AES_ENCRYPT('admin',666), 2, 1);
 
 select * from usuario;
 
 CREATE TABLE tipoPersonal (
 	tipoPersonal_id INT AUTO_INCREMENT,
 	tipoPersonal_nombre VARCHAR(100),
-	tipoPersonal_estado BIT, /*1.Activo 2.Inactivo*/
+	tipoPersonal_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(tipoPersonal_id)
 );
 
@@ -46,11 +49,14 @@ CREATE TABLE personal (
 	personal_apellidos VARCHAR(100),
 	personal_tipo INT,
 	personal_usuario INT,
-	personal_estado BIT, /*1.Activo 2.Inactivo*/
+	personal_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(personal_id),
 	FOREIGN KEY(personal_tipo) REFERENCES tipoPersonal(tipoPersonal_id),
 	FOREIGN KEY(personal_usuario) REFERENCES usuario(usuario_id)
 );
+
+
+INSERT INTO personal VALUES(NULL, '11-1','Luis','Martinez','2','2',1);
 
 /*Esta tabla almacena a los clientes que decidan registrarse para recibir promociones.*/
 CREATE TABLE cliente (
@@ -58,7 +64,7 @@ CREATE TABLE cliente (
 	cliente_nombre VARCHAR(50),
 	cliente_apellido VARCHAR(100),
 	cliente_nacimiento DATE,
-	cliente_estado BIT, /*1.Activo 2.Inactivo*/
+	cliente_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(cliente_fono)
 );
 
@@ -66,7 +72,7 @@ CREATE TABLE cliente (
 CREATE TABLE tipoProducto (
 	tipoProducto_id INT AUTO_INCREMENT,
 	tipoProducto_nombre VARCHAR(100),
-	tipoProducto_estado BIT, /*1.Activo 2.Inactivo*/
+	tipoProducto_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(tipoProducto_id)
 );
 
@@ -77,7 +83,7 @@ CREATE TABLE producto (
 	producto_nombre VARCHAR(100),
 	producto_precio INT,
 	producto_tipo INT,
-	producto_estado BIT, /*1.Activo 2.Inactivo*/
+	producto_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(producto_id),
 	FOREIGN KEY(producto_tipo) REFERENCES tipoProducto(tipoProducto_id)
 );
@@ -87,7 +93,7 @@ CREATE TABLE promocion (
 	promocion_id INT AUTO_INCREMENT,
 	promocion_nombre VARCHAR(100),
 	promocion_descueto INT,
-	promocion_estado BIT, /*1.Activo 2.Inactivo*/
+	promocion_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(promocion_id)
 );
 
@@ -96,7 +102,7 @@ CREATE TABLE productoPromocion (
 	productoPromocion_id INT AUTO_INCREMENT,
 	productoPromocion_idPromocion INT,
 	productoPromocion_idProducto INT,
-	productoPromocion_estado BIT, /*1.Activo 2.Inactivo*/
+	productoPromocion_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(productoPromocion_id),
 	FOREIGN KEY(productoPromocion_idPromocion) REFERENCES promocion(promocion_id),
 	FOREIGN KEY(productoPromocion_idProducto) REFERENCES producto(producto_id)
@@ -109,7 +115,7 @@ CREATE TABLE venta(
 	venta_fecha DATETIME,
 	venta_personal INT,
 	venta_cliente VARCHAR(15),
-	venta_estado BIT, /*1.Activo 2.Inactivo*/
+	venta_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(venta_id),
 	FOREIGN KEY(venta_personal) REFERENCES personal(personal_id),
 	FOREIGN KEY(venta_cliente) REFERENCES cliente(cliente_fono)
@@ -120,7 +126,7 @@ CREATE TABLE productoVenta (
 	productoVenta_id INT AUTO_INCREMENT,
 	productoVenta_producto INT,
 	productoVenta_venta INT,
-	productoVenta_estado BIT, /*1.Activo 2.Inactivo*/
+	productoVenta_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(productoVenta_id),
 	FOREIGN KEY(productoVenta_producto) REFERENCES producto(producto_id),
 	FOREIGN KEY(productoVenta_venta) REFERENCES venta(venta_id)

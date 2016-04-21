@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import modelo.Cliente;
 import modelo.Personal;
+import modelo.Producto;
 import modelo.TipoPersonal;
 import modelo.TipoProducto;
 import modelo.TipoUsuario;
@@ -15,7 +16,8 @@ public class DAO {
 
     public final Conexion C;
     private String sql;
-
+    private List<Producto> productos;
+    
     public DAO() throws SQLException {
         C = new Conexion(
                 DatosConexion.SERVER,
@@ -33,7 +35,7 @@ public class DAO {
         sql = "insert into tipoUsuario values("
                 + "null,"
                 + "'" + tipo.getNombre() + "',"
-                + "'" + tipo.getEstado() + "'"
+                + "1"
                 + ");";
         C.ejecutar(sql);
     }
@@ -71,7 +73,7 @@ public class DAO {
     public void actualizarTipoUsuario(TipoUsuario tipo) throws SQLException {
         sql = "update tipoUsuario set "
                 + "tipoUsuario_nombre = '" + tipo.getNombre() + "', "
-                + "tipoUsuario_estado = '" + tipo.getEstado() + "' "
+                + "tipoUsuario_estado = " + tipo.getEstado() + " "
                 + "where "
                 + "tipoUsuario_id = '" + tipo.getId() + "';";
         C.ejecutar(sql);
@@ -79,7 +81,7 @@ public class DAO {
 
     public void desactivarTipoUsuario(int id) throws SQLException {
         sql = "update tipoUsuario set "
-                + "tipoUsuario_estado = '0' "
+                + "tipoUsuario_estado = 0 "
                 + "where "
                 + "tipoUsuario_id = '" + id + "';";
         C.ejecutar(sql);
@@ -87,7 +89,7 @@ public class DAO {
 
     public void activarTipoUsuario(int id) throws SQLException {
         sql = "update tipoUsuario set "
-                + "tipoUsuario_estado = '1' "
+                + "tipoUsuario_estado = 1 "
                 + "where "
                 + "tipoUsuario_id = '" + id + "';";
         C.ejecutar(sql);
@@ -130,7 +132,7 @@ public class DAO {
                 + "'" + u.getNombre() + "',"
                 + "AES_ENCRYPT('"+u.getPassword()+"',666),"
                 + "'" + u.getTipoUsuario() + "',"
-                + "" + u.getEstado() + ""
+                + "1"
                 + ");";
         C.ejecutar(sql);
     }
@@ -138,6 +140,23 @@ public class DAO {
     public Usuario getUsuario(Usuario u) throws SQLException {
         Usuario user = null;
         sql = "SELECT * FROM usuario WHERE usuario_nombre = '" + u.getNombre() + "' AND usuario_clave = AES_ENCRYPT('" + u.getPassword() + "',666)";
+        C.resultado = C.ejecutarSelect(sql);
+        if (C.resultado.next()) {
+            user = new Usuario(
+                    C.resultado.getInt(1),
+                    C.resultado.getString(2),
+                    C.resultado.getString(3),
+                    C.resultado.getInt(4),
+                    C.resultado.getInt(5)
+            );
+        }
+        C.sentencia.close();
+        return user;
+    }
+    
+    public Usuario getUltimoUsuario() throws SQLException {
+        Usuario user = null;
+        sql = "SELECT * FROM usuario";
         C.resultado = C.ejecutarSelect(sql);
         if (C.resultado.next()) {
             user = new Usuario(
@@ -179,7 +198,7 @@ public class DAO {
                 + "usuario_nombre = '" + u.getNombre() + "', "
                 + "usuario_clave = '" + u.getPassword() + "', "
                 + "usuario_tipo = '" + u.getTipoUsuario() + "', "
-                + "usuario_estado = '" + u.getEstado() + "' "
+                + "usuario_estado = " + u.getEstado() + " "
                 + "where "
                 + "usuario_id = '" + u.getId() + "';";
         C.ejecutar(sql);
@@ -195,7 +214,7 @@ public class DAO {
 
     public void activarUsuario(int id) throws SQLException {
         sql = "update usuario set "
-                + "usuario_estado = '1' "
+                + "usuario_estado = 1 "
                 + "where "
                 + "usuario_id = '" + id + "';";
         C.ejecutar(sql);
@@ -238,7 +257,7 @@ public class DAO {
         sql = "INSERT INTO tipoPersonal VALUES("
                 + "NULL,"
                 + "'" + tipo.getNombre() + "',"
-                + "'" + tipo.getEstado() + "'"
+                + "1"
                 + ");";
         C.ejecutar(sql);
     }
@@ -276,7 +295,7 @@ public class DAO {
     public void actualizarTipoPersonal(TipoPersonal tipo) throws SQLException {
         sql = "UPDATE tipoPersonal SET "
                 + "tipoPersonal_nombre = '" + tipo.getNombre() + "', "
-                + "tipoPersonal_estado = '" + tipo.getEstado() + "' "
+                + "tipoPersonal_estado = " + tipo.getEstado() + " "
                 + "WHERE "
                 + "tipoPersonal_id = '" + tipo.getId() + "';";
         C.ejecutar(sql);
@@ -284,7 +303,7 @@ public class DAO {
 
     public void desactivarTipoPersonal(int id) throws SQLException {
         sql = "UPDATE tipoPersonal SET "
-                + "tipoPersonal_estado = '0' "
+                + "tipoPersonal_estado = 0 "
                 + "WHERE "
                 + "tipoPersonal_id = '" + id + "';";
         C.ejecutar(sql);
@@ -292,7 +311,7 @@ public class DAO {
 
     public void activarTipoPersonal(int id) throws SQLException {
         sql = "UPDATE tipoPersonal SET "
-                + "tipoPersonal_estado = '1' "
+                + "tipoPersonal_estado = 1 "
                 + "WHERE "
                 + "tipoPersonal_id = '" + id + "';";
         C.ejecutar(sql);
@@ -336,7 +355,7 @@ public class DAO {
                 + "'" + p.apellidos + "',"
                 + "'" + p.tipo + "',"
                 + "'" + p.usuario + "',"
-                + "'" + p.estado + "'"
+                + "1"
                 + ");";
         C.ejecutar(sql);
     }
@@ -365,7 +384,9 @@ public class DAO {
         sql = "SELECT * FROM personal WHERE "
                 + "personal_nombre like '%" + arg + "%' "
                 + "OR "
-                + "personal_tipo like '%" + arg + "%';";
+                + "personal_rut like '%" + arg + "%' "
+                + "OR "
+                + "personal_apellidos like '%" + arg + "%';";
         C.resultado = C.ejecutarSelect(sql);
         Personal p;
         List<Personal> li = new ArrayList<>();
@@ -391,7 +412,7 @@ public class DAO {
                 + "personal_apellidos = '" + p.getApellidos() + "', "
                 + "personal_tipo = '" + p.getTipo() + "', "
                 + "personal_usuario = '" + p.getUsuario() + "', "
-                + "personal_estado = '" + p.getEstado() + "' "
+                + "personal_estado = " + p.getEstado() + " "
                 + "WHERE "
                 + "personal_id = '" + p.getId() + "';";
         C.ejecutar(sql);
@@ -399,7 +420,7 @@ public class DAO {
 
     public void desactivarPersonal(int id) throws SQLException {
         sql = "UPDATE personal SET "
-                + "personal_estado = '0' "
+                + "personal_estado = 0 "
                 + "where "
                 + "personal_id = '" + id + "';";
         C.ejecutar(sql);
@@ -407,7 +428,7 @@ public class DAO {
 
     public void activarPersonal(int id) throws SQLException {
         sql = "UPDATE personal SET "
-                + "personal_estado = '1' "
+                + "personal_estado = 1 "
                 + "where "
                 + "personal_id = '" + id + "';";
         C.ejecutar(sql);
@@ -454,7 +475,7 @@ public class DAO {
                 + "'" + cli.nombre + "',"
                 + "'" + cli.apellido + "',"
                 + "'" + cli.nacimiento + "',"
-                + "'" + cli.estado + "'"
+                + "1"
                 + ");";
         C.ejecutar(sql);
     }
@@ -505,7 +526,7 @@ public class DAO {
                 + "cliente_nombre = '" + cli.getNombre() + "', "
                 + "cliente_apellido = '" + cli.getApellido() + "', "
                 + "cliente_nacimiento = '" + cli.getNacimiento() + "', "
-                + "cliente_estado = '" + cli.getEstado() + "' "
+                + "cliente_estado = " + cli.getEstado() + " "
                 + "WHERE "
                 + "cliente_fono = '" + cli.getFono() + "';";
         C.ejecutar(sql);
@@ -513,7 +534,7 @@ public class DAO {
 
     public void desactivarCliente(int fono) throws SQLException {
         sql = "UPDATE cliente SET "
-                + "cliente_estado = '0' "
+                + "cliente_estado = 0 "
                 + "where "
                 + "cliente_fono = '" + fono + "';";
         C.ejecutar(sql);
@@ -521,7 +542,7 @@ public class DAO {
 
     public void activarCliente(int fono) throws SQLException {
         sql = "UPDATE cliente SET "
-                + "cliente_estado = '1' "
+                + "cliente_estado = 1 "
                 + "where "
                 + "cliente_fono = '" + fono + "';";
         C.ejecutar(sql);
@@ -564,7 +585,7 @@ public class DAO {
         sql = "INSERT INTO tipoProducto VALUES("
                 + "NULL,"
                 + "'" + tipo.getNombre() + "',"
-                + "'" + tipo.getEstado() + "'"
+                + "1"
                 + ");";
         C.ejecutar(sql);
     }
@@ -602,7 +623,7 @@ public class DAO {
     public void actualizarTipoProducto(TipoProducto tipo) throws SQLException {
         sql = "UPDATE tipoProducto SET "
                 + "tipoProducto_nombre = '" + tipo.getNombre() + "', "
-                + "tipoProducto_estado = '" + tipo.getEstado() + "' "
+                + "tipoProducto_estado = " + tipo.getEstado() + " "
                 + "WHERE "
                 + "tipoProducto_id = '" + tipo.getId() + "';";
         C.ejecutar(sql);
@@ -610,7 +631,7 @@ public class DAO {
 
     public void desactivarTipoProducto(int id) throws SQLException {
         sql = "UPDATE tipoProducto SET "
-                + "tipoProducto_estado = '0' "
+                + "tipoProducto_estado = 0 "
                 + "WHERE "
                 + "tipoProducto_id = '" + id + "';";
         C.ejecutar(sql);
@@ -618,7 +639,7 @@ public class DAO {
 
     public void activarTipoProducto(int id) throws SQLException {
         sql = "UPDATE tipoProducto SET "
-                + "tipoProducto_estado = '1' "
+                + "tipoProducto_estado = 1 "
                 + "WHERE "
                 + "tipoProducto_id = '" + id + "';";
         C.ejecutar(sql);
@@ -630,7 +651,7 @@ public class DAO {
     }
 
     public List<TipoProducto> getTiposProductos() throws SQLException {
-        sql = "SELECT * FROM tipoProducto;";
+        sql = "SELECT * FROM tipoProducto WHERE tipoProducto_estado = 1";
         C.resultado = C.ejecutarSelect(sql);
         TipoProducto tipo;
         List<TipoProducto> listaTipo = new ArrayList<>();
@@ -655,9 +676,55 @@ public class DAO {
     /*
      Inicio Métodos producto
      */
+    public List<Producto> getProductos() throws SQLException{
+        productos = new ArrayList<>();
+        sql = "SELECT * FROM producto WHERE producto_estado = 1";
+        C.resultado = C.ejecutarSelect(sql);
+        Producto p;
+        while (C.resultado.next()) {
+            p = new Producto();
+            p.setId(C.resultado.getInt(1));
+            p.setNombre(C.resultado.getString(2));
+            p.setPrecio(C.resultado.getInt(3));
+            p.setEstado(C.resultado.getInt(4));
+            productos.add(p);
+        }
+        C.sentencia.close();
+        return productos;
+    }
     
-    
-    
+     public void crearProducto(Producto p) throws SQLException {
+        sql = "INSERT INTO producto VALUES("
+                + "NULL,"
+                + "'" + p.getNombre() + "',"
+                + "'" + p.getPrecio() + "',"
+                + "'" + p.getTipo() + "',"
+                + "1"
+                + ");";
+        C.ejecutar(sql);
+    }
+     
+     public void eliminarProducto(String id) throws SQLException{
+         sql = "UPDATE producto SET producto_estado = 0 WHERE producto_id = "+id+"";
+         C.ejecutar(sql);
+     }
+     
+     public List<Producto> getProductosLike(String filtro) throws SQLException{
+        productos = new ArrayList<>();
+        sql = "SELECT * FROM producto WHERE producto_estado = 1 and producto_nombre like '%"+filtro+"%'";
+        C.resultado = C.ejecutarSelect(sql);
+        Producto p;
+        while (C.resultado.next()) {
+            p = new Producto();
+            p.setId(C.resultado.getInt(1));
+            p.setNombre(C.resultado.getString(2));
+            p.setPrecio(C.resultado.getInt(3));
+            p.setEstado(C.resultado.getInt(4));
+            productos.add(p);
+        }
+        C.sentencia.close();
+        return productos;
+    }
     /*
      Fin Métodos producto
      */
