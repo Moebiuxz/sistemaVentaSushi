@@ -40,9 +40,9 @@ if(StaticPage.PAGINA == EnumPaginas.MENU){
                 <%
                 if(u != null && u.getTipoUsuario() == 1){
                     //out.println("<li class='"+menu+"'><a href='menu.jsp'>Ingresar Producción<span class='sr-only'>(current)</span></a></li>");
-                    out.println("<li class='"+listarPersonal+"'><a href=''>Listar Personal</a></li>");
+                    out.println("<li class='"+listarPersonal+"'><a href='menuAdmin.jsp'>Listar Personal</a></li>");
                     out.println("<li class='"+cocinero+"'><a href=''>Crear Cocinero</a></li>");
-                    out.println("<li class='"+crearUsuario+"'><a href=''>Crear Usuario</a></li>");   
+                    out.println("<li class='"+crearUsuario+"'><a href='registrarUsuario.jsp'>Registrar Usuario</a></li>");   
                 }else if(u != null && u.getTipoUsuario() == 2){
                     
                 }
