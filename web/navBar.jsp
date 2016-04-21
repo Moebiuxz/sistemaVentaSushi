@@ -8,6 +8,7 @@ String cocinero = "";
 String menu = "";
 String crearUsuario = "";
 String listarPersonal = "";
+String listarUsuarios = "";
 
 
 if(StaticPage.PAGINA == EnumPaginas.MENU){
@@ -18,6 +19,8 @@ if(StaticPage.PAGINA == EnumPaginas.MENU){
     crearUsuario = "active";
 }else if(StaticPage.PAGINA == EnumPaginas.LISTAR_PERSONAL){
     listarPersonal = "active";
+}else if(StaticPage.PAGINA == EnumPaginas.LISTAR_USUARIOS){
+    listarUsuarios = "active";
 }
 %>
 <!DOCTYPE html>
@@ -43,6 +46,7 @@ if(StaticPage.PAGINA == EnumPaginas.MENU){
                     out.println("<li class='"+listarPersonal+"'><a href='menuAdmin.jsp'>Listar Personal</a></li>");
                     out.println("<li class='"+cocinero+"'><a href=''>Crear Cocinero</a></li>");
                     out.println("<li class='"+crearUsuario+"'><a href='registrarUsuario.jsp'>Registrar Usuario</a></li>");   
+                    out.println("<li class='"+listarUsuarios+"'><a href='listarUsuarios.jsp'>Listar Usuarios</a></li>");   
                 }else if(u != null && u.getTipoUsuario() == 2){
                     
                 }
