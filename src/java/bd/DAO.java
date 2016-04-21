@@ -118,7 +118,7 @@ public class DAO {
      */
     
     public void crearUsuario(Usuario u) throws SQLException {
-        sql = "insert into usuario values("
+        sql = "INSERT INTO usuario VALUES("
                 + "null,"
                 + "'" + u.getNombre() + "',"
                 + "'" + u.getPassword() + "',"
