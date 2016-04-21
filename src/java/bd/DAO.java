@@ -130,7 +130,7 @@ public class DAO {
                 + "'" + u.getNombre() + "',"
                 + "'" + u.getPassword() + "',"
                 + "'" + u.getTipoUsuario() + "',"
-                + "'" + u.getEstado() + "'"
+                + "" + u.getEstado() + ""
                 + ");";
         C.ejecutar(sql);
     }
@@ -223,7 +223,7 @@ public class DAO {
         C.sentencia.close();
         return lu;
     }
-    
+
     /*
      Fin Métodos Usuario
      */
@@ -318,7 +318,7 @@ public class DAO {
         C.sentencia.close();
         return listaTipo;
     }
-    
+
     /*
      Fin Métodos tipoPersonal
      */
@@ -331,12 +331,12 @@ public class DAO {
     
     public void crearPersonal(Personal p) throws SQLException {
         sql = "INSERT INTO personal VALUES("
-                + "NULL,'"+p.rut+"',"
-                + "'"+p.nombre+"',"
-                + "'"+p.apellidos+"',"
-                + "'"+p.tipo+"',"
-                + "'"+p.usuario+"',"
-                + "'"+p.estado+"'"
+                + "NULL,'" + p.rut + "',"
+                + "'" + p.nombre + "',"
+                + "'" + p.apellidos + "',"
+                + "'" + p.tipo + "',"
+                + "'" + p.usuario + "',"
+                + "'" + p.estado + "'"
                 + ");";
         C.ejecutar(sql);
     }
@@ -437,7 +437,7 @@ public class DAO {
         C.sentencia.close();
         return li;
     }
-    
+
     /*
      Fin Métodos personal
      */
@@ -450,11 +450,11 @@ public class DAO {
     
     public void crearCliente(Cliente cli) throws SQLException {
         sql = "INSERT INTO cliente VALUES("
-                + "NULL,'"+cli.fono+"',"
-                + "'"+cli.nombre+"',"
-                + "'"+cli.apellido+"',"
-                + "'"+cli.nacimiento+"',"
-                + "'"+cli.estado+"'"
+                + "NULL,'" + cli.fono + "',"
+                + "'" + cli.nombre + "',"
+                + "'" + cli.apellido + "',"
+                + "'" + cli.nacimiento + "',"
+                + "'" + cli.estado + "'"
                 + ");";
         C.ejecutar(sql);
     }
@@ -549,7 +549,7 @@ public class DAO {
         C.sentencia.close();
         return li;
     }
-    
+
     /*
      Fin Métodos cliente
      */
@@ -644,7 +644,7 @@ public class DAO {
         C.sentencia.close();
         return listaTipo;
     }
-    
+
     /*
      Fin Métodos tipoProducto
      */
@@ -657,7 +657,7 @@ public class DAO {
      */
     
     
-     
+    
     /*
      Fin Métodos producto
      */
