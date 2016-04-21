@@ -45,6 +45,4 @@ public class Conexion {
         resultado = sentencia.executeQuery(select);
         return resultado;
     }
-    
-    
 }
