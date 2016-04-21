@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nombre">Contraseña:</label>
-                            <input name="txtPassword" type="text" class="form-control" id="pass" placeholder="Contraseña">
+                            <input name="txtPassword" type="pass" class="form-control" id="pass" placeholder="Contraseña">
                         </div>
                         
                         <button type="submit" class="btn btn-default pull-right">Registrar</button>
