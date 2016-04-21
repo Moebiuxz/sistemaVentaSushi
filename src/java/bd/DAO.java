@@ -23,6 +23,7 @@ public class DAO {
     /*
      Inicio Métodos TipoUsuario
      */
+    
     public void crearTipoUsuario(TipoUsuario tipo) throws SQLException {
         sql = "insert into tipoUsuario values("
                 + "null,"
@@ -111,9 +112,11 @@ public class DAO {
     /*
      Fin Métodos TipoUsuario
      */
+    
     /*
      Inicio Métodos Usuario
      */
+    
     public void crearUsuario(Usuario u) throws SQLException {
         sql = "insert into usuario values("
                 + "null,"
@@ -213,6 +216,7 @@ public class DAO {
         C.sentencia.close();
         return lu;
     }
+    
     /*
      Fin Métodos Usuario
      */
