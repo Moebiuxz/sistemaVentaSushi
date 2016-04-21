@@ -25,6 +25,8 @@ CREATE TABLE usuario(
 /*INSERT por defecto*/
 INSERT INTO usuario VALUES (NULL, 'admin', AES_ENCRYPT('admin',666), 1, 1);
 
+select * from usuario;
+
 CREATE TABLE tipoPersonal (
 	tipoPersonal_id INT AUTO_INCREMENT,
 	tipoPersonal_nombre VARCHAR(100),

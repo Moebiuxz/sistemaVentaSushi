@@ -128,7 +128,7 @@ public class DAO {
         sql = "INSERT INTO usuario VALUES("
                 + "null,"
                 + "'" + u.getNombre() + "',"
-                + "'" + u.getPassword() + "',"
+                + "AES_ENCRYPT('"+u.getPassword()+"',666),"
                 + "'" + u.getTipoUsuario() + "',"
                 + "" + u.getEstado() + ""
                 + ");";
@@ -187,7 +187,7 @@ public class DAO {
 
     public void desactivarUsuario(int id) throws SQLException {
         sql = "update usuario set "
-                + "usuario_estado = '0' "
+                + "usuario_estado = 0 "
                 + "where "
                 + "usuario_id = '" + id + "';";
         C.ejecutar(sql);

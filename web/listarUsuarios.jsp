@@ -1,3 +1,6 @@
+<%@page import="bd.DAO"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="otros.EnumPaginas"%>
 <%@page import="otros.StaticPage"%>
 <%@page import="modelo.Usuario"%>
@@ -16,7 +19,7 @@
         <title>Listar Usuarios</title>
         <link rel="stylesheet" href="css/style_InicioSesion.css" type="text/css"/>
         <link rel="stylesheet" href="css/bootstrap.min.css">
-        
+
     </head>
     <body>
         <header>
@@ -44,6 +47,42 @@
                             <th>Actualizar</th>
                             <th>Eliminar</th>
                         </tr>
+                        <%                            
+                            DAO d = new DAO();
+                            for (Usuario user : d.getUsuarios()) {
+                                if (user.getEstado() == 1) {
+                        %>
+                        <tr>
+                            <td>
+                                <%
+                                    out.println("");
+                                %>
+                            </td>
+                            <td>
+                                <%
+                                    out.println(user.getNombre());
+                                %>
+                            </td>
+                            <td>
+                                <%
+                                    out.println(user.getPassword());
+                                %>
+                            </td>
+                            <td>
+                                <%
+                                    out.println("<a href='actualizarUsuario.jsp?id="+user.getId()+"'>Actualizar</a>");
+                                %>
+                            </td>
+                            <td>
+                                <%
+                                    out.println("<a href='eliminarUsuario.do?id="+user.getId()+"'>Eliminar</a>");
+                                %>
+                            </td>
+                        </tr>
+                        <%
+                                }
+                            }
+                        %>                        
                     </table>
                 </div>
             </div>
