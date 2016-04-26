@@ -11,37 +11,30 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Usuario;
+import modelo.Personal;
 
-@WebServlet(name = "ActualizarUsuarioServlet", urlPatterns = {"/actualizarUsuario.do"})
-public class ActualizarUsuarioServlet extends HttpServlet {
+@WebServlet(name = "EliminarPersonalServlet", urlPatterns = {"/eliminarPersonal.do"})
+public class EliminarPersonalServlet extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try (PrintWriter out = response.getWriter()) {
-            
-            try {
+        try {
             response.setContentType("text/html;charset=UTF-8");
             
-            int id = Integer.parseInt(request.getParameter("txtId"));
-            String nombre = request.getParameter("txtNombre");
-            String pass = request.getParameter("txtPassword");
-            
+            int id = Integer.parseInt(request.getParameter("r"));
             DAO d = new DAO();
-            Usuario u = new Usuario();
-            u.setId(id);
-            u.setNombre(nombre);
-            u.setPassword(pass);
-            u.setEstado(1);
-            u.setTipoUsuario(2);
-            d.actualizarUsuario(u);
             
-            response.sendRedirect("listarUsuarios.jsp");
+            Personal p = d.getPersonalPorId(Integer.toString(id));
+            
+            d.desactivarPersonal(id);
+            d.desactivarUsuario(p.usuario);
+            
+            response.sendRedirect("menuAdmin.jsp");
+            
         } catch (SQLException ex) {
-            Logger.getLogger(ActualizarUsuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EliminarPersonalServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-            
-        }
+        
         
     }
 

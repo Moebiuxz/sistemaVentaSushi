@@ -66,8 +66,8 @@
                                 out.println("<td>" + per.getNombre() + "</td>");
                                 out.println("<td>" + per.getApellidos()+ "</td>");
                                 out.println("<td>" + tp.getNombre()+ "</td>");
-                                out.println("<td><a class='imaGG' href='editarPersonal.jsp?r="+per.getId()+"'></a>Editar</td>");
-                                out.println("<td></td>");
+                                out.println("<td><a href='actualizarPersonal.jsp?r="+per.getId()+"'>Actualizar</a></td>");
+                                out.println("<td><a href='eliminarPersonal.do?r="+per.getId()+"'>Eliminar</a></td>");
                                 out.println("</tr>");
                             }
                         %>
@@ -75,8 +75,9 @@
                     
                     <h2>Crear de Personal</h2>
                     <a class="btn btn-default" role="button" href="crearPersonal.jsp">Crear Personal</a>
-                    
+
                 </div>
             </div>
-        </body>
-            </html>
+        </div>
+    </body>
+</html>

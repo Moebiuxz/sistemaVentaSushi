@@ -203,6 +203,14 @@ public class DAO {
                 + "usuario_id = '" + u.getId() + "';";
         C.ejecutar(sql);
     }
+    
+    public void actualizarNombreUsuario(String nombre, int id) throws SQLException {
+        sql = "update usuario set "
+                + "usuario_nombre = '" + nombre + "'"
+                + "where "
+                + "usuario_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
 
     public void desactivarUsuario(int id) throws SQLException {
         sql = "update usuario set "
@@ -362,7 +370,7 @@ public class DAO {
 
     public Personal getPersonalPorId(String id) throws SQLException {
         Personal per = null;
-        sql = "SELECT * FROM personal WHERE personal_id = '" + id + "')";
+        sql = "SELECT * FROM personal WHERE personal_id = '" + id + "'";
         C.resultado = C.ejecutarSelect(sql);
         if (C.resultado.next()) {
             per = new Personal(
@@ -404,6 +412,15 @@ public class DAO {
         C.sentencia.close();
         return li;
     }
+    
+    public void actualizarPersonalNombApell(Personal p) throws SQLException {
+        sql = "UPDATE personal SET "
+                + "personal_nombre = '" + p.getNombre() + "', "
+                + "personal_apellidos = '" + p.getApellidos() + "' "
+                + "WHERE "
+                + "personal_id = '" + p.getId() + "';";
+        C.ejecutar(sql);
+    }
 
     public void actualizarPersonal(Personal p) throws SQLException {
         sql = "UPDATE personal SET "
@@ -440,7 +457,7 @@ public class DAO {
     }
 
     public List<Personal> getPersonales() throws SQLException {
-        sql = "SELECT * FROM personal;";
+        sql = "SELECT * FROM personal WHERE personal_estado = 1;";
         C.resultado = C.ejecutarSelect(sql);
         Personal p;
         List<Personal> li = new ArrayList<>();
@@ -521,7 +538,7 @@ public class DAO {
         return li;
     }
 
-    public void actualizarPersonal(Cliente cli) throws SQLException {
+    public void actualizarCliente(Cliente cli) throws SQLException {
         sql = "UPDATE cliente SET "
                 + "cliente_nombre = '" + cli.getNombre() + "', "
                 + "cliente_apellido = '" + cli.getApellido() + "', "

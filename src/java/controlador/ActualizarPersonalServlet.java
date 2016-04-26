@@ -11,10 +11,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.Personal;
 import modelo.Usuario;
 
-@WebServlet(name = "ActualizarUsuarioServlet", urlPatterns = {"/actualizarUsuario.do"})
-public class ActualizarUsuarioServlet extends HttpServlet {
+@WebServlet(name = "ActualizarPersonalServlet", urlPatterns = {"/actualizarPersonal.do"})
+public class ActualizarPersonalServlet extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
@@ -22,26 +24,31 @@ public class ActualizarUsuarioServlet extends HttpServlet {
             try {
             response.setContentType("text/html;charset=UTF-8");
             
-            int id = Integer.parseInt(request.getParameter("txtId"));
-            String nombre = request.getParameter("txtNombre");
-            String pass = request.getParameter("txtPassword");
+            String id, nombre, apellido;
+            
+            id = request.getParameter("txtId");
+            nombre = request.getParameter("txtNombre");
+            apellido = request.getParameter("txtApellido");
             
             DAO d = new DAO();
-            Usuario u = new Usuario();
-            u.setId(id);
-            u.setNombre(nombre);
-            u.setPassword(pass);
-            u.setEstado(1);
-            u.setTipoUsuario(2);
-            d.actualizarUsuario(u);
             
-            response.sendRedirect("listarUsuarios.jsp");
+            Personal p = d.getPersonalPorId(id);
+            
+            Personal perAc = new Personal(p.id, p.rut, nombre, apellido, p.tipo, p.usuario, p.estado);
+            
+            d.actualizarNombreUsuario(nombre, p.usuario);
+            d.actualizarPersonal(perAc);
+            
+            response.sendRedirect("menuAdmin.jsp");
+            
         } catch (SQLException ex) {
-            Logger.getLogger(ActualizarUsuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ActualizarPersonalServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
             
-            
         }
+        
+        
+        
         
     }
 
