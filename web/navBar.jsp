@@ -4,22 +4,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <% 
 Usuario u = (Usuario)request.getSession().getAttribute("usuario");
-String cocinero = "";
 String menu = "";
-String crearUsuario = "";
 String listarPersonal = "";
 String listarUsuarios = "";
 String listarProductos = "";
 String crearProducto = "";
-
+String crearPromocion = "";
 
 
 if(StaticPage.PAGINA == EnumPaginas.MENU){
     menu = "active";
-}else if(StaticPage.PAGINA == EnumPaginas.CREAR_COCINERO){
-    cocinero = "active";
-}else if(StaticPage.PAGINA == EnumPaginas.CREAR_USUARIO){
-    crearUsuario = "active";
 }else if(StaticPage.PAGINA == EnumPaginas.LISTAR_PERSONAL){
     listarPersonal = "active";
 }else if(StaticPage.PAGINA == EnumPaginas.LISTAR_USUARIOS){
@@ -27,6 +21,8 @@ if(StaticPage.PAGINA == EnumPaginas.MENU){
 }else if(StaticPage.PAGINA == EnumPaginas.LISTAR_PRODUCTOS){
     listarUsuarios = "active";
 }else if(StaticPage.PAGINA == EnumPaginas.CREAR_PRODUCTO){
+    listarUsuarios = "active";
+}else if(StaticPage.PAGINA == EnumPaginas.CREAR_PROMOCION){
     listarUsuarios = "active";
 }
 %>
@@ -51,11 +47,10 @@ if(StaticPage.PAGINA == EnumPaginas.MENU){
                 if(u != null && u.getTipoUsuario() == 1){
                     //out.println("<li class='"+menu+"'><a href='menu.jsp'>Ingresar Producción<span class='sr-only'>(current)</span></a></li>");
                     out.println("<li class='"+listarPersonal+"'><a href='menuAdmin.jsp'>Listar Personal</a></li>");
-                    out.println("<li class='"+cocinero+"'><a href=''>Crear Cocinero</a></li>");
-                    out.println("<li class='"+crearUsuario+"'><a href='registrarUsuario.jsp'>Registrar Usuario</a></li>");   
                     out.println("<li class='"+listarUsuarios+"'><a href='listarUsuarios.jsp'>Listar Usuarios</a></li>");   
                     out.println("<li class='"+crearProducto+"'><a href='registrarProducto.jsp'>Crear Producto</a></li>");   
-                    out.println("<li class='"+listarUsuarios+"'><a href='listarProducto.jsp'>Listar Productos</a></li>");   
+                    out.println("<li class='"+listarUsuarios+"'><a href='listarProducto.jsp'>Listar Productos</a></li>");  
+                    out.println("<li class='"+crearPromocion+"'><a href='crearPromocion.jsp'>Crear Promocion</a></li>");   
                 }else if(u != null && u.getTipoUsuario() == 2){
                     
                 }

@@ -76,6 +76,10 @@ CREATE TABLE tipoProducto (
 	PRIMARY KEY(tipoProducto_id)
 );
 
+INSERT INTO tipoProducto VALUES(NULL, 'Sushi',1);
+INSERT INTO tipoProducto VALUES(NULL, 'Bebestible',1);
+INSERT INTO tipoProducto VALUES(NULL, 'Postre',1);
+
 /*Estos vendrían siendo los productos a la venta, por ejemplo sushi apanado, normal, 
 o bebida, etc.*/
 CREATE TABLE producto (
@@ -88,6 +92,8 @@ CREATE TABLE producto (
 	FOREIGN KEY(producto_tipo) REFERENCES tipoProducto(tipoProducto_id)
 );
 
+select * from producto;
+
 /*Contiene el nombre de la promoción y el descuento que tiene la promo.*/
 CREATE TABLE promocion (
 	promocion_id INT AUTO_INCREMENT,
@@ -96,7 +102,7 @@ CREATE TABLE promocion (
 	promocion_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(promocion_id)
 );
-
+select * from promocion;
 /*Tabla generada por relacion muchos a muchos entre producto y promocion.*/
 CREATE TABLE productoPromocion (
 	productoPromocion_id INT AUTO_INCREMENT,
@@ -107,7 +113,7 @@ CREATE TABLE productoPromocion (
 	FOREIGN KEY(productoPromocion_idPromocion) REFERENCES promocion(promocion_id),
 	FOREIGN KEY(productoPromocion_idProducto) REFERENCES producto(producto_id)
 );
-
+select * from productoPromocion;
 /*Esta almacena la fecha de la venta, el personal que la hizo y 
 al cliente(si se encuentra registrado).*/
 CREATE TABLE venta(

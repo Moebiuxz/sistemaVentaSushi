@@ -29,6 +29,7 @@
     </head>
     <body>
         <header>
+            <%@include file="elimReg.jsp" %>
             <%@include file="navBar.jsp"%>
         </header>
         <div class="container" >

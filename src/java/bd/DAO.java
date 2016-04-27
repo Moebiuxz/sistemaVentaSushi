@@ -7,6 +7,8 @@ import java.util.List;
 import modelo.Cliente;
 import modelo.Personal;
 import modelo.Producto;
+import modelo.ProductoPromocion;
+import modelo.Promocion;
 import modelo.TipoPersonal;
 import modelo.TipoProducto;
 import modelo.TipoUsuario;
@@ -158,7 +160,7 @@ public class DAO {
         Usuario user = null;
         sql = "SELECT * FROM usuario";
         C.resultado = C.ejecutarSelect(sql);
-        if (C.resultado.next()) {
+        while (C.resultado.next()) {
             user = new Usuario(
                     C.resultado.getInt(1),
                     C.resultado.getString(2),
@@ -710,7 +712,7 @@ public class DAO {
         return productos;
     }
     
-     public void crearProducto(Producto p) throws SQLException {
+    public void crearProducto(Producto p) throws SQLException {
         sql = "INSERT INTO producto VALUES("
                 + "NULL,"
                 + "'" + p.getNombre() + "',"
@@ -742,6 +744,18 @@ public class DAO {
         C.sentencia.close();
         return productos;
     }
+     
+     public Producto getProducto(int id) throws SQLException {
+        Producto pr = null;
+        sql = "SELECT * FROM producto WHERE producto_id = '" + id + "'";
+        C.resultado = C.ejecutarSelect(sql);
+        if (C.resultado.next()) {
+            pr = new Producto(C.resultado.getInt(1), C.resultado.getString(2), C.resultado.getInt(3), C.resultado.getInt(4), C.resultado.getInt(5));
+        }
+        C.sentencia.close();
+        return pr;
+    }
+     
     /*
      Fin Métodos producto
      */
@@ -752,6 +766,31 @@ public class DAO {
      Inicio Métodos promocion
      */
     
+    public void crearPromocion(Promocion p) throws SQLException {
+        sql = "INSERT INTO promocion VALUES("
+                + "NULL,"
+                + "'" + p.getNombre() + "',"
+                + "'" + p.getDescuento() + "',"
+                + "1"
+                + ");";
+        C.ejecutar(sql);
+    }
+    
+    public Promocion getUltimaPromocion() throws SQLException {
+        Promocion prom = null;
+        sql = "SELECT * FROM promocion";
+        C.resultado = C.ejecutarSelect(sql);
+        while (C.resultado.next()) {
+            prom = new Promocion(
+                    C.resultado.getInt(1),
+                    C.resultado.getString(2),
+                    C.resultado.getInt(3),
+                    C.resultado.getInt(4)
+            );
+        }
+        C.sentencia.close();
+        return prom;
+    }
     
     
     /*
@@ -764,7 +803,15 @@ public class DAO {
      Inicio Métodos productoPromocion
      */
     
-    
+    public void crearProductoPromocion(ProductoPromocion p) throws SQLException {
+        sql = "INSERT INTO productoPromocion VALUES("
+                + "NULL,"
+                + "'" + p.getIdPromocion() + "',"
+                + "'" + p.getIdProducto()+ "',"
+                + "1"
+                + ");";
+        C.ejecutar(sql);
+    }
     
     /*
      Fin Métodos productoPromocion

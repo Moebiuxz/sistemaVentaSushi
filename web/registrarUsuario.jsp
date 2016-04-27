@@ -8,7 +8,7 @@
         response.sendRedirect("index.jsp");
     }
     
-    StaticPage.PAGINA = EnumPaginas.CREAR_USUARIO;
+    StaticPage.PAGINA = EnumPaginas.CREAR_USUARIO; 
 %>
 <!DOCTYPE html>
 <html>
@@ -20,6 +20,7 @@
     </head>
     <body>
         <header>
+            <%@include file="elimReg.jsp" %>
             <%@include file="navBar.jsp" %>
         </header>
         <div class="container" >

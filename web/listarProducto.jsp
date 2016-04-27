@@ -32,6 +32,7 @@
     </head>
     <body>
         <header>
+            <%@include file="elimReg.jsp" %>
             <%@include file="navBar.jsp" %>
         </header>
         <div class="container" >
@@ -58,7 +59,7 @@
                         </tr>
                         <%
                         for(Producto p : productos){
-                            out.println("<tr>");
+                            out.println("<tr>"); 
                                 out.println("<td>"+p.getId()+"</td>");
                                 out.println("<td>"+p.getNombre()+"</td>");
                                 out.println("<td>"+p.getPrecio()+"</td>");
