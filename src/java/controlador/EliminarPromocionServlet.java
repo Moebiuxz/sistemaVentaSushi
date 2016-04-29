@@ -11,44 +11,25 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Personal;
-import modelo.Usuario;
 
-@WebServlet(name = "CrearPersonal", urlPatterns = {"/crearPersonal.do"})
-public class CrearPersonalServlet extends HttpServlet {
-    String fiinal = "";
+@WebServlet(name = "EliminarPromocionServlet", urlPatterns = {"/eliminarPromocion.do"})
+public class EliminarPromocionServlet extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
         try {
-            String nombre, rut, apellido, tipoProducto, tipoUsuario;
-            int tipoProductofin, tipoUsuarioFin;
+            response.setContentType("text/html;charset=UTF-8");
             
-            rut = request.getParameter("txtRut");
-            nombre = request.getParameter("txtNombre");
-            apellido = request.getParameter("txtApellido");
-            tipoProducto = request.getParameter("cboTipoProducto");
-            tipoUsuario = request.getParameter("cboTipoUsuario");
+            String id = request.getParameter("r");
             
-            tipoUsuarioFin = Integer.parseInt(tipoUsuario);
-            tipoProductofin = Integer.parseInt(tipoProducto);
-            
-            generarClave();
             DAO d = new DAO();
-            Usuario u = new Usuario(1, nombre, fiinal, tipoUsuarioFin, 1);
-            d.crearUsuario(u);
             
-            Usuario uu = d.getUltimoUsuario();
+            d.eliminarPromocion(id);
             
-            Personal p = new Personal(1, rut, nombre, apellido, tipoProductofin, uu.getId(), 1);
-            
-            d.crearPersonal(p);
-            
-            response.sendRedirect("crearPersonal.jsp?m="+fiinal+"");
+            response.sendRedirect("listaPromociones.jsp");
             
         } catch (SQLException ex) {
-            Logger.getLogger(CrearPersonalServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EliminarPromocionServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
@@ -91,23 +72,5 @@ public class CrearPersonalServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private void generarClave() {
-        
-        int num1 = 65;
-        int num2 = 126;
-
-        char c = 0;
-        for (int i = 1; i <= 6; i++) {
-            int numAleatorio = (int) Math.floor(Math.random() * (num2 - num1) + num1);
-
-            if (i == 1) {
-                fiinal = Integer.toString(numAleatorio);
-            }
-            fiinal = fiinal + (char) numAleatorio;
-            c++;
-        }
-
-    }
 
 }

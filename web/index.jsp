@@ -38,6 +38,12 @@
                     -->  
                 </div>
             </div>
+            <%
+                String m = request.getParameter("m");
+                if (m != null) {
+                    out.println("<div class='alert alert-success' role='alert'>Usuario o Contraseña Incorrecta</div>");
+                }
+            %>
         </div>
     </body>
 </html>

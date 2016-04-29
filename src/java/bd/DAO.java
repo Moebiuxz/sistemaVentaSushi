@@ -1,6 +1,5 @@
 package bd;
 
-import com.sun.security.ntlm.Client;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,17 +7,23 @@ import modelo.Cliente;
 import modelo.Personal;
 import modelo.Producto;
 import modelo.ProductoPromocion;
+import modelo.ProductoVenta;
 import modelo.Promocion;
+import modelo.Respaldo;
 import modelo.TipoPersonal;
 import modelo.TipoProducto;
 import modelo.TipoUsuario;
 import modelo.Usuario;
+import modelo.Venta;
 
 public class DAO {
 
     public final Conexion C;
     private String sql;
     private List<Producto> productos;
+    private List<Promocion> promociones;
+    private List<ProductoPromocion> productoPromociones;
+    private List<Respaldo> respaldos;
     
     public DAO() throws SQLException {
         C = new Conexion(
@@ -392,11 +397,11 @@ public class DAO {
     /*Para buscar, no para validar con pass*/
     public List<Personal> getPersonalLike(String arg) throws SQLException {
         sql = "SELECT * FROM personal WHERE "
-                + "personal_nombre like '%" + arg + "%' "
+                + "(personal_nombre like '%" + arg + "%' "
                 + "OR "
                 + "personal_rut like '%" + arg + "%' "
                 + "OR "
-                + "personal_apellidos like '%" + arg + "%';";
+                + "personal_apellidos like '%" + arg + "%') AND personal_estado = 1;";
         C.resultado = C.ejecutarSelect(sql);
         Personal p;
         List<Personal> li = new ArrayList<>();
@@ -792,6 +797,27 @@ public class DAO {
         return prom;
     }
     
+    public List<Promocion> getPromociones() throws SQLException{
+        promociones = new ArrayList<>();
+        sql = "SELECT * FROM promocion WHERE promocion_estado = 1";
+        C.resultado = C.ejecutarSelect(sql);
+        Promocion p;
+        while (C.resultado.next()) {
+            p = new Promocion();
+            p.setId(C.resultado.getInt(1));
+            p.setNombre(C.resultado.getString(2));
+            p.setDescuento(C.resultado.getInt(3));
+            p.setEstado(C.resultado.getInt(4));
+            promociones.add(p);
+        }
+        C.sentencia.close();
+        return promociones;
+    }
+    
+    public void eliminarPromocion(String id) throws SQLException{
+         sql = "UPDATE promocion SET promocion_estado = 0 WHERE promocion_id = "+id+"";
+         C.ejecutar(sql);
+     }
     
     /*
      Fin Métodos promocion
@@ -813,6 +839,23 @@ public class DAO {
         C.ejecutar(sql);
     }
     
+    public List<ProductoPromocion> getProductoPromocion(int id) throws SQLException{
+        productoPromociones = new ArrayList<>();
+        sql = "SELECT * FROM productoPromocion WHERE productoPromocion_estado = 1 AND productoPromocion_idPromocion = '"+id+"'";
+        C.resultado = C.ejecutarSelect(sql);
+        ProductoPromocion pp;
+        while (C.resultado.next()) {
+            pp = new ProductoPromocion();
+            pp.setId(C.resultado.getInt(1));
+            pp.setIdPromocion(C.resultado.getInt(2));
+            pp.setIdProducto(C.resultado.getInt(3));
+            pp.setEstado(C.resultado.getInt(4));
+            productoPromociones.add(pp);
+        }
+        C.sentencia.close();
+        return productoPromociones;
+    }
+    
     /*
      Fin Métodos productoPromocion
      */
@@ -823,7 +866,180 @@ public class DAO {
      Inicio Métodos venta
      */
     
-    
+        public void crearVenta(Venta v) throws SQLException {
+        sql = "insert into venta values(null,'" + v.getFecha() + "','" + v.getPersonal() + "','" + v.getCliente() + "',1);";
+        C.ejecutar(sql);
+    }
+
+    public Venta getVenta(int id) throws SQLException {
+        sql = "select * from venta where venta_id = '" + id + "'";
+        C.resultado = C.ejecutarSelect(sql);
+        Venta v = null;
+        if (C.resultado.next()) {
+            v = new Venta();
+            v.setId(C.resultado.getInt(1));
+            v.setFecha(C.resultado.getString(2));
+            v.setPersonal(C.resultado.getInt(3));
+            v.setCliente(C.resultado.getString(4));
+            v.setEstado(C.resultado.getInt(5));
+        }
+        C.sentencia.close();
+        return v;
+    }
+
+    public List<Venta> getVentaLike(String arg) throws SQLException {
+        sql = "select * from venta where "
+                + "venta_personal like '%" + arg + "%' "
+                + "or "
+                + "venta_cliente like '%" + arg + "%';";
+        C.resultado = C.ejecutarSelect(sql);
+        Venta v;
+        List<Venta> lv = new ArrayList<>();
+        while (C.resultado.next()) {
+            v = new Venta();
+            v.setId(C.resultado.getInt(1));
+            v.setFecha(C.resultado.getString(2));
+            v.setPersonal(C.resultado.getInt(3));
+            v.setCliente(C.resultado.getString(4));
+            v.setEstado(C.resultado.getInt(5));
+            lv.add(v);
+        }
+        C.sentencia.close();
+        return lv;
+    }
+
+    public void desactivarVenta(int id) throws SQLException {
+        sql = "update venta set "
+                + "venta_estado = 0 "
+                + "where "
+                + "venta_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public void activarVenta(int id) throws SQLException {
+        sql = "update venta set "
+                + "venta_estado = 1 "
+                + "where "
+                + "venta_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public void eliminarVenta(int id) throws SQLException {
+        sql = "delete from venta where venta_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public List<Venta> getVentas() throws SQLException {
+        sql = "select * from venta;";
+        C.resultado = C.ejecutarSelect(sql);
+        Venta v;
+        List<Venta> lv = new ArrayList<>();
+        while (C.resultado.next()) {
+            v = new Venta();
+            v.setId(C.resultado.getInt(1));
+            v.setFecha(C.resultado.getString(2));
+            v.setPersonal(C.resultado.getInt(3));
+            v.setCliente(C.resultado.getString(4));
+            v.setEstado(C.resultado.getInt(5));
+            lv.add(v);
+        }
+        C.sentencia.close();
+        return lv;
+    }
+
+    /*
+     Fin Métodos venta
+     */
+    //========================================================================
+    /*
+     Inicio Métodos productoVenta
+     */
+    public void crearProductoVenta(ProductoVenta pv) throws SQLException {
+        sql = "insert into productoVenta values("
+                + "null,"
+                + "'" + pv.getProducto() + "',"
+                + "'" + pv.getVenta() + "',"
+                + "'" + pv.getEstado() + "'"
+                + ");";
+        C.ejecutar(sql);
+    }
+
+    public ProductoVenta getProductoVenta(int id) throws SQLException {
+        sql = "select * from productoVenta where venta_id = '" + id + "'";
+        C.resultado = C.ejecutarSelect(sql);
+        ProductoVenta pv = null;
+        if (C.resultado.next()) {
+            pv = new ProductoVenta();
+            pv.setId(C.resultado.getInt(1));
+            pv.setProducto(C.resultado.getInt(2));
+            pv.setVenta(C.resultado.getInt(3));
+            pv.setEstado(C.resultado.getInt(4));
+        }
+        C.sentencia.close();
+        return pv;
+    }
+
+    public List<ProductoVenta> getProductoVentaLike(String arg) throws SQLException {
+        sql = "select * from tipoUsuario where "
+                + "productoVenta_producto like '%" + arg + "%' "
+                + "or "
+                + "productoVenta_venta like '%" + arg + "%';";
+        C.resultado = C.ejecutarSelect(sql);
+        ProductoVenta pv;
+        List<ProductoVenta> lpv = new ArrayList<>();
+        while (C.resultado.next()) {
+            pv = new ProductoVenta();
+            pv.setId(C.resultado.getInt(1));
+            pv.setProducto(C.resultado.getInt(2));
+            pv.setVenta(C.resultado.getInt(3));
+            pv.setEstado(C.resultado.getInt(4));
+            lpv.add(pv);
+        }
+        C.sentencia.close();
+        return lpv;
+    }
+
+    public void desactivarProductoVenta(int id) throws SQLException {
+        sql = "update productoVenta set "
+                + "productoVenta_estado = 0 "
+                + "where "
+                + "productoVenta_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public void activarProductoVenta(int id) throws SQLException {
+        sql = "update productoVenta set "
+                + "productoVenta_estado = 1 "
+                + "where "
+                + "productoVenta_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public void eliminarProductoVenta(int id) throws SQLException {
+        sql = "delete from productoVenta where productoVenta_id = '" + id + "';";
+        C.ejecutar(sql);
+    }
+
+    public List<ProductoVenta> getProductosVenta() throws SQLException {
+        sql = "select * from productoVenta;";
+        C.resultado = C.ejecutarSelect(sql);
+        ProductoVenta pv;
+        List<ProductoVenta> lpv = new ArrayList<>();
+        while (C.resultado.next()) {
+            pv = new ProductoVenta();
+            pv.setId(C.resultado.getInt(1));
+            pv.setProducto(C.resultado.getInt(2));
+            pv.setVenta(C.resultado.getInt(3));
+            pv.setEstado(C.resultado.getInt(4));
+            lpv.add(pv);
+        }
+        C.sentencia.close();
+        return lpv;
+    }
+
+    /*
+     Fin Métodos productoVenta
+     */
     
     /*
      Fin Métodos venta
@@ -841,4 +1057,58 @@ public class DAO {
      Fin Métodos productoVenta
      */
     
+    /*Prueba*/
+    public void cambiarMaster() throws SQLException{
+        sql = "USE mysql";
+        C.ejecutar(sql);
+    }
+    
+    public void generarBackUpPersonalizado(Respaldo r) throws SQLException{
+        sql = "INSERT INTO autoBackup VALUES (NULL, '"+r.getFecha()+"', '"+r.getTipo()+"')";
+        C.ejecutar(sql);
+    }
+    
+    public Respaldo getBackUpAutomatico() throws SQLException{
+        Respaldo r = null;
+        sql = "SELECT * FROM autoBackup";
+        C.resultado = C.ejecutarSelect(sql);
+        if(C.resultado.next()){
+            r = new Respaldo();
+            r.setId(C.resultado.getInt(1));
+            r.setFecha(C.resultado.getString(2));
+            r.setTipo(C.resultado.getString(3));
+        }
+        return r;
+    }
+    
+    public void actualizarBackupAutomaticoDiario(String fechaFinal) throws SQLException{
+        sql = "UPDATE autoBackup SET fecha = '"+fechaFinal+"'";
+        C.ejecutar(sql);
+    }
+    
+    /*
+     Inicio Métodos respaldo
+     */
+    
+    public void crearRespaldo(Respaldo r) throws SQLException{
+        sql = "INSERT INTO respaldo VALUES(NULL, '"+r.getFecha()+"', '"+r.getHora()+"', 0)";
+        C.ejecutar(sql);
+    }
+    
+    public List<Respaldo> getRespaldos() throws SQLException{
+        respaldos = new ArrayList<>();
+        sql = "SELECT * FROM respaldo";
+        C.resultado = C.ejecutarSelect(sql);
+        
+        while(C.resultado.next()){
+            Respaldo r = new Respaldo(C.resultado.getInt(1), C.resultado.getString(2), C.resultado.getString(3));
+            respaldos.add(r);
+        }
+        C.sentencia.close();
+        return respaldos;
+    }
+    
+    /*
+     Fin Métodos respaldo
+     */
 }

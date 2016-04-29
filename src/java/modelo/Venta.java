@@ -1,11 +1,9 @@
 package modelo;
 
-import java.sql.Date;
-
 public class Venta {
 
     public int id;
-    public Date fecha;
+    public String fecha;
     public int personal;
     public String cliente;
     public int estado; /*1.Activo 2.Inactivo*/
@@ -14,7 +12,7 @@ public class Venta {
     public Venta() {
     }
 
-    public Venta(int id, Date fecha, int personal, String cliente, int estado) {
+    public Venta(int id, String fecha, int personal, String cliente, int estado) {
         this.id = id;
         this.fecha = fecha;
         this.personal = personal;
@@ -30,11 +28,11 @@ public class Venta {
         this.id = id;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 

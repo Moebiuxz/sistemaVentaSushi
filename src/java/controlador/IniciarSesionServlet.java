@@ -29,10 +29,12 @@ public class IniciarSesionServlet extends HttpServlet {
                 if (d.getTipoUsuario(user.getTipoUsuario()).getNombre().equalsIgnoreCase("ADMIN")) {
                     request.getSession().setAttribute("usuario", user);
                     response.sendRedirect("menuAdmin.jsp");
+                }else{
+                    request.getSession().setAttribute("usuario", user);
+                    response.sendRedirect("menuUser.jsp");
                 }
-
             } else {
-
+                response.sendRedirect("index.jsp?m=1");
             }
         } catch (Exception ex) {
             Logger.getLogger(IniciarSesionServlet.class.getName()).log(Level.SEVERE, null, ex);

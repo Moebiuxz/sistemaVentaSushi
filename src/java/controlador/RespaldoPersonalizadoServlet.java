@@ -4,6 +4,9 @@ import bd.DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -11,46 +14,44 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Personal;
-import modelo.Usuario;
+import modelo.Respaldo;
 
-@WebServlet(name = "CrearPersonal", urlPatterns = {"/crearPersonal.do"})
-public class CrearPersonalServlet extends HttpServlet {
-    String fiinal = "";
+@WebServlet(name = "RespaldoPersonalizadoServlet", urlPatterns = {"/respaldoPersonalizado.do"})
+public class RespaldoPersonalizadoServlet extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        try {
-            String nombre, rut, apellido, tipoProducto, tipoUsuario;
-            int tipoProductofin, tipoUsuarioFin;
-            
-            rut = request.getParameter("txtRut");
-            nombre = request.getParameter("txtNombre");
-            apellido = request.getParameter("txtApellido");
-            tipoProducto = request.getParameter("cboTipoProducto");
-            tipoUsuario = request.getParameter("cboTipoUsuario");
-            
-            tipoUsuarioFin = Integer.parseInt(tipoUsuario);
-            tipoProductofin = Integer.parseInt(tipoProducto);
-            
-            generarClave();
-            DAO d = new DAO();
-            Usuario u = new Usuario(1, nombre, fiinal, tipoUsuarioFin, 1);
-            d.crearUsuario(u);
-            
-            Usuario uu = d.getUltimoUsuario();
-            
-            Personal p = new Personal(1, rut, nombre, apellido, tipoProductofin, uu.getId(), 1);
-            
-            d.crearPersonal(p);
-            
-            response.sendRedirect("crearPersonal.jsp?m="+fiinal+"");
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(CrearPersonalServlet.class.getName()).log(Level.SEVERE, null, ex);
+
+        String resp = request.getParameter("personalizar");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        String fechaHora = dateFormat.format(cal.getTime());
+        String[] fix = fechaHora.split(" ");
+
+        if (resp.equalsIgnoreCase("diario")) {
+            try {
+
+                Respaldo r = new Respaldo();
+                r.setFecha(fix[0]);
+                r.setTipo("Diario");
+                DAO d = new DAO();
+                d.generarBackUpPersonalizado(r);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(RespaldoPersonalizadoServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (resp.equalsIgnoreCase("mensual")){
+            try {
+                Respaldo r = new Respaldo();
+                r.setFecha(fix[0]);
+                r.setTipo("Mensual");
+                DAO d = new DAO();
+                d.generarBackUpPersonalizado(r);
+            } catch (SQLException ex) {
+                Logger.getLogger(RespaldoPersonalizadoServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -91,23 +92,5 @@ public class CrearPersonalServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private void generarClave() {
-        
-        int num1 = 65;
-        int num2 = 126;
-
-        char c = 0;
-        for (int i = 1; i <= 6; i++) {
-            int numAleatorio = (int) Math.floor(Math.random() * (num2 - num1) + num1);
-
-            if (i == 1) {
-                fiinal = Integer.toString(numAleatorio);
-            }
-            fiinal = fiinal + (char) numAleatorio;
-            c++;
-        }
-
-    }
 
 }

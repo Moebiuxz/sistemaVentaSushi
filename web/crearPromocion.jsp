@@ -65,7 +65,7 @@
                     <%
                     } else {%>
                     <h4>Nombre Promocion: <%out.println(PromEstatica.NOMBRE);%></h4>
-                    <h4>Descuento: %<%out.println(PromEstatica.DESCUENTO);%></h4>
+                    <h4>Descuento: <%out.println(PromEstatica.DESCUENTO);%>%</h4>
                     <form action="crearPromocion.jsp" method="POST">
                         <label for="producto">Producto:</label>
                         <div class="form-group">
@@ -94,7 +94,8 @@
                             <th>Nombre</th>
                             <th>Precio</th>
                         </tr>
-                        <%                                for (Producto pro : PromEstatica.LI) {
+                        <%                                
+                            for (Producto pro : PromEstatica.LI) {
                                 out.println("<tr>");
                                 out.println("<td>" + pro.getNombre() + "</td>");
                                 out.println("<td>" + pro.getPrecio() + "</td>");
@@ -122,11 +123,15 @@
                     <%
                             }
                         }
+                    
+                    if(PromEstatica.LI.size() != 0){%>
+                       <a class="btn btn-default" role="button" href="registrarPromocion.do">Crear Promocion</a>
+                    <%
+                    }
                     %>
-                    <a class="btn btn-default" role="button" href="registrarPromocion.do">Crear Promocion</a>
+                    
                     <br/><br/><br/>
                 </div>
-
             </div>
         </div>
     </body>

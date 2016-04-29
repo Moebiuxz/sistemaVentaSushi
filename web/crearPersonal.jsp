@@ -28,6 +28,14 @@
                         <input class="btn btn-primary" name="btnCrearPersonal" type="submit" value="Crear Personal"><br/><br/>
                         <a class="btn btn-danger" role="button" href="menuAdmin.jsp">Volver</a>
                     </form>
+                    <div style="margin-top: 60px; ">
+                        <%
+                            String m = request.getParameter("m");
+                            if (m != null) {
+                                out.println("<div class='alert alert-success' role='alert'>La clave del usuario creado es : "+m+"</div>");
+                            }
+                        %>
+                    </div>
                 </div>
             </div>
         </div>

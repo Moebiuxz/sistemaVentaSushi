@@ -6,5 +6,7 @@ public enum EnumPaginas {
     LISTAR_PRODUCTOS,
     CREAR_PRODUCTO,
     CREAR_PROMOCION,
+    LISTA_PROMOCION,
+    RESPALDO,
     MENU
 }

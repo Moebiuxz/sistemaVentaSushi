@@ -2,29 +2,34 @@
 <%@page import="otros.StaticPage"%>
 <%@page import="modelo.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<% 
-Usuario u = (Usuario)request.getSession().getAttribute("usuario");
-String menu = "";
-String listarPersonal = "";
-String listarUsuarios = "";
-String listarProductos = "";
-String crearProducto = "";
-String crearPromocion = "";
+<%
+    Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+    String menu = "";
+    String listarPersonal = "";
+    String listarUsuarios = "";
+    String listarProductos = "";
+    String crearProducto = "";
+    String crearPromocion = "";
+    String listaPromocion = "";
+    String respaldo = "";
 
-
-if(StaticPage.PAGINA == EnumPaginas.MENU){
-    menu = "active";
-}else if(StaticPage.PAGINA == EnumPaginas.LISTAR_PERSONAL){
-    listarPersonal = "active";
-}else if(StaticPage.PAGINA == EnumPaginas.LISTAR_USUARIOS){
-    listarUsuarios = "active";
-}else if(StaticPage.PAGINA == EnumPaginas.LISTAR_PRODUCTOS){
-    listarUsuarios = "active";
-}else if(StaticPage.PAGINA == EnumPaginas.CREAR_PRODUCTO){
-    listarUsuarios = "active";
-}else if(StaticPage.PAGINA == EnumPaginas.CREAR_PROMOCION){
-    listarUsuarios = "active";
-}
+    if (StaticPage.PAGINA == EnumPaginas.MENU) {
+        menu = "active";
+    } else if (StaticPage.PAGINA == EnumPaginas.LISTAR_PERSONAL) {
+        listarPersonal = "active";
+    } else if (StaticPage.PAGINA == EnumPaginas.LISTAR_USUARIOS) {
+        listarUsuarios = "active";
+    } else if (StaticPage.PAGINA == EnumPaginas.LISTAR_PRODUCTOS) {
+        listarProductos = "active";
+    } else if (StaticPage.PAGINA == EnumPaginas.CREAR_PRODUCTO) {
+        crearProducto = "active";
+    } else if (StaticPage.PAGINA == EnumPaginas.CREAR_PROMOCION) {
+        crearPromocion = "active";
+    } else if (StaticPage.PAGINA == EnumPaginas.LISTA_PROMOCION) {
+        listaPromocion = "active";
+    } else if (StaticPage.PAGINA == EnumPaginas.RESPALDO) {
+        respaldo = "active";
+    }
 %>
 <!DOCTYPE html>
 <nav class="navbar navbar-default">
@@ -44,18 +49,20 @@ if(StaticPage.PAGINA == EnumPaginas.MENU){
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <%
-                if(u != null && u.getTipoUsuario() == 1){
-                    //out.println("<li class='"+menu+"'><a href='menu.jsp'>Ingresar Producción<span class='sr-only'>(current)</span></a></li>");
-                    out.println("<li class='"+listarPersonal+"'><a href='menuAdmin.jsp'>Listar Personal</a></li>");
-                    out.println("<li class='"+listarUsuarios+"'><a href='listarUsuarios.jsp'>Listar Usuarios</a></li>");   
-                    out.println("<li class='"+crearProducto+"'><a href='registrarProducto.jsp'>Crear Producto</a></li>");   
-                    out.println("<li class='"+listarUsuarios+"'><a href='listarProducto.jsp'>Listar Productos</a></li>");  
-                    out.println("<li class='"+crearPromocion+"'><a href='crearPromocion.jsp'>Crear Promocion</a></li>");   
-                }else if(u != null && u.getTipoUsuario() == 2){
-                    
-                }
+                    if (u != null && u.getTipoUsuario() == 1) {
+                        //out.println("<li class='"+menu+"'><a href='menu.jsp'>Ingresar Producción<span class='sr-only'>(current)</span></a></li>");
+                        out.println("<li class='" + listarPersonal + "'><a href='menuAdmin.jsp'>Listar Personal</a></li>");
+                        //out.println("<li class='"+listarUsuarios+"'><a href='listarUsuarios.jsp'>Listar Usuarios</a></li>");   
+                        out.println("<li class='" + crearProducto + "'><a href='registrarProducto.jsp'>Crear Producto</a></li>");
+                        out.println("<li class='" + listarProductos + "'><a href='listarProducto.jsp'>Listar Productos</a></li>");
+                        out.println("<li class='" + crearPromocion + "'><a href='crearPromocion.jsp'>Crear Promocion</a></li>");
+                        out.println("<li class='" + listaPromocion + "'><a href='listaPromociones.jsp'>Listar Promociones</a></li>");
+                        out.println("<li class='" + respaldo + "'><a href='respaldo.jsp'>Respaldar</a></li>");
+                    } else if (u != null && u.getTipoUsuario() == 2) {
+
+                    }
                 %>
-                
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="cerrarSesion.do">Cerrar Sesión</a></li>

@@ -47,6 +47,7 @@
                     <form action="menuAdmin.jsp" method="POST">
                         <button type="submit" class="btn btn-default pull-right">Mostrar todo</button>
                     </form>
+                    
                     <br><br><br>
                     <h2>Lista de Personal</h2>
                     <table class="table table-bordered" style="margin-top: 30px;">
