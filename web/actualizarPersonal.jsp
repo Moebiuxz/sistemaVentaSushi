@@ -31,15 +31,15 @@
                     <form action="actualizarPersonal.do" method="POST">
                         <div class="form-group">
                             <label for="nombre">ID:</label>
-                            <input name="txtId" type="text" class="form-control" id="id" value="<%=id%>" disabled>
+                            <input name="txtId" type="text" class="form-control" value="<%=id%>" disabled>
                         </div>
                         <div class="form-group">
                             <label for="nombre">Nombre:</label>
-                            <input name="txtNombre" type="text" class="form-control" id="nombre" value="<%out.println(per.nombre);%>">
+                            <input name="txtNombre" type="text" class="form-control" value="<%out.println(per.nombre);%>">
                         </div>
                         <div class="form-group">
                             <label for="nombre">Apellido:</label>
-                            <input name="txtApellido" type="text" class="form-control" id="nombre" value="<%out.println(per.apellidos);%>">
+                            <input name="txtApellido" type="text" class="form-control" value="<%out.println(per.apellidos);%>">
                         </div>
                         
                         <button type="submit" class="btn btn-default pull-right">Actualizar</button>

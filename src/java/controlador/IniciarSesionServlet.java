@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.Personal;
 import modelo.Usuario;
 
 @WebServlet(name = "IniciarSesionServlet", urlPatterns = {"/iniciarSesion.do"})
@@ -19,23 +20,31 @@ public class IniciarSesionServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String nombre = request.getParameter("txtUsuario");
+        String rut = request.getParameter("txtRut");
         String pass = request.getParameter("txtPass");
-        Usuario u = new Usuario(0, nombre, pass, 0, 0);
+
         try {
             DAO d = new DAO();
-            Usuario user = d.getUsuario(u);
-            if (user != null) {
-                if (d.getTipoUsuario(user.getTipoUsuario()).getNombre().equalsIgnoreCase("ADMIN")) {
-                    request.getSession().setAttribute("usuario", user);
-                    response.sendRedirect("menuAdmin.jsp");
-                }else{
-                    request.getSession().setAttribute("usuario", user);
-                    response.sendRedirect("menuUser.jsp");
+            Personal pers = d.getPersonalSegunRutUsuario(rut);
+            if (pers != null) {
+                Usuario u = new Usuario(0, pers.nombre, pass, 0, 0);
+                Usuario user = d.getUsuario(u);
+
+                if (user != null) {
+                    if (d.getTipoUsuario(user.getTipoUsuario()).getNombre().equalsIgnoreCase("ADMIN")) {
+                        request.getSession().setAttribute("usuario", user);
+                        response.sendRedirect("menuAdmin.jsp");
+                    } else {
+                        request.getSession().setAttribute("usuario", user);
+                        response.sendRedirect("menuUsuario.jsp");
+                    }
+                } else {
+                    response.sendRedirect("index.jsp?m=1");
                 }
             } else {
                 response.sendRedirect("index.jsp?m=1");
             }
+
         } catch (Exception ex) {
             Logger.getLogger(IniciarSesionServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

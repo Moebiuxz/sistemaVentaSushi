@@ -1,24 +1,20 @@
 package modelo;
 
-import java.sql.Date;
-
 public class Cliente {
 
     public String fono;
     public String nombre;
     public String apellido;
-    public Date nacimiento;
     public int estado; /*1.Activo, 2.Inactivo.*/
 
 
     public Cliente() {
     }
 
-    public Cliente(String fono, String nombre, String apellido, Date nacimiento, int estado) {
+    public Cliente(String fono, String nombre, String apellido, int estado) {
         this.fono = fono;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.nacimiento = nacimiento;
         this.estado = estado;
     }
 
@@ -46,14 +42,6 @@ public class Cliente {
         this.apellido = apellido;
     }
 
-    public Date getNacimiento() {
-        return nacimiento;
-    }
-
-    public void setNacimiento(Date nacimiento) {
-        this.nacimiento = nacimiento;
-    }
-
     public int getEstado() {
         return estado;
     }
@@ -61,5 +49,6 @@ public class Cliente {
     public void setEstado(int estado) {
         this.estado = estado;
     }
+    
 
 }

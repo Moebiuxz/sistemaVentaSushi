@@ -135,10 +135,10 @@ public class DAO {
     
     public void crearUsuario(Usuario u) throws SQLException {
         sql = "INSERT INTO usuario VALUES("
-                + "null,"
-                + "'" + u.getNombre() + "',"
-                + "AES_ENCRYPT('"+u.getPassword()+"',666),"
-                + "'" + u.getTipoUsuario() + "',"
+                + "NULL,"
+                + "'" + u.nombre + "',"
+                + "AES_ENCRYPT('"+u.password+"',666),"
+                + "'" + u.tipoUsuario + "',"
                 + "1"
                 + ");";
         C.ejecutar(sql);
@@ -394,6 +394,25 @@ public class DAO {
         return per;
     }
 
+    public Personal getPersonalSegunRutUsuario(String rutUsu) throws SQLException {
+        Personal per = null;
+        sql = "SELECT * FROM personal WHERE personal_rut = '" + rutUsu + "'";
+        C.resultado = C.ejecutarSelect(sql);
+        if (C.resultado.next()) {
+            per = new Personal(
+                    C.resultado.getInt(1),
+                    C.resultado.getString(2),
+                    C.resultado.getString(3),
+                    C.resultado.getString(4),
+                    C.resultado.getInt(5),
+                    C.resultado.getInt(6),
+                    C.resultado.getInt(7)
+            );
+        }
+        C.sentencia.close();
+        return per;
+    }
+    
     /*Para buscar, no para validar con pass*/
     public List<Personal> getPersonalLike(String arg) throws SQLException {
         sql = "SELECT * FROM personal WHERE "
@@ -494,27 +513,20 @@ public class DAO {
      */
     
     public void crearCliente(Cliente cli) throws SQLException {
-        sql = "INSERT INTO cliente VALUES("
-                + "NULL,'" + cli.fono + "',"
-                + "'" + cli.nombre + "',"
-                + "'" + cli.apellido + "',"
-                + "'" + cli.nacimiento + "',"
-                + "1"
-                + ");";
+        sql = "INSERT INTO cliente VALUES('"+cli.fono+"','"+cli.nombre+"','"+cli.apellido+"',1);";
         C.ejecutar(sql);
     }
 
     public Cliente getClientePorFono(String id) throws SQLException {
         Cliente cl = null;
-        sql = "SELECT * FROM cliente WHERE cliente_fono = '" + id + "')";
+        sql = "SELECT * FROM cliente WHERE cliente_fono = '" + id + "'";
         C.resultado = C.ejecutarSelect(sql);
         if (C.resultado.next()) {
             cl = new Cliente(
                     C.resultado.getString(1),
                     C.resultado.getString(2),
                     C.resultado.getString(3),
-                    C.resultado.getDate(4),
-                    C.resultado.getInt(5)
+                    C.resultado.getInt(4)
             );
         }
         C.sentencia.close();
@@ -537,8 +549,7 @@ public class DAO {
             cl.setFono(C.resultado.getString(1));
             cl.setNombre(C.resultado.getString(2));
             cl.setApellido(C.resultado.getString(3));
-            cl.setNacimiento(C.resultado.getDate(4));
-            cl.setEstado(C.resultado.getInt(5));
+            cl.setEstado(C.resultado.getInt(4));
             li.add(cl);
         }
         C.sentencia.close();
@@ -549,7 +560,6 @@ public class DAO {
         sql = "UPDATE cliente SET "
                 + "cliente_nombre = '" + cli.getNombre() + "', "
                 + "cliente_apellido = '" + cli.getApellido() + "', "
-                + "cliente_nacimiento = '" + cli.getNacimiento() + "', "
                 + "cliente_estado = " + cli.getEstado() + " "
                 + "WHERE "
                 + "cliente_fono = '" + cli.getFono() + "';";
@@ -587,8 +597,7 @@ public class DAO {
             cl.setFono(C.resultado.getString(1));
             cl.setNombre(C.resultado.getString(2));
             cl.setApellido(C.resultado.getString(3));
-            cl.setNacimiento(C.resultado.getDate(4));
-            cl.setEstado(C.resultado.getInt(5));
+            cl.setEstado(C.resultado.getInt(4));
             li.add(cl);
         }
         C.sentencia.close();

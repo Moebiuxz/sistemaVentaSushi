@@ -22,7 +22,7 @@
                         <img class="profile-img" src="images/icon_login.png"
                              alt="">
                         <form class="form-signin" action="iniciarSesion.do" method="POST">
-                            <input type="text" name="txtUsuario" class="form-control" placeholder="Usuario:" required autofocus>
+                            <input type="text" name="txtRut" class="form-control" placeholder="Usuario:" required autofocus>
                             <input type="password" name="txtPass" class="form-control" placeholder="Clave:" required>
                             <button class="btn btn-lg btn-primary btn-block" type="submit">
                                 Ingresar</button>

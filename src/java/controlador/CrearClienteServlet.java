@@ -11,40 +11,35 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.Personal;
+import modelo.Cliente;
 
-@WebServlet(name = "ActualizarPersonalServlet", urlPatterns = {"/actualizarPersonal.do"})
-public class ActualizarPersonalServlet extends HttpServlet {
+@WebServlet(name = "CrearClienteServlet", urlPatterns = {"/crearCliente.do"})
+public class CrearClienteServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            try {
+        try {
             response.setContentType("text/html;charset=UTF-8");
             
-            String id, nombre, apellido;
+            String fono, nombre, apellido;
             
-            id = request.getParameter("txtId");
+            fono = request.getParameter("txtFono");
             nombre = request.getParameter("txtNombre");
             apellido = request.getParameter("txtApellido");
             
+            Cliente cli = new Cliente(fono, nombre, apellido, 1);
+            
             DAO d = new DAO();
             
-            Personal p = d.getPersonalPorId(id);
+            d.crearCliente(cli);
             
-            Personal perAc = new Personal(p.id, p.rut, nombre, apellido, p.tipo, p.usuario, p.estado);
-            
-            d.actualizarNombreUsuario(nombre, p.usuario);
-            d.actualizarPersonal(perAc);
-            
-            response.sendRedirect("menuAdmin.jsp");
+            response.sendRedirect("menuUsuario.jsp?txtFono="+fono+"");
             
         } catch (SQLException ex) {
-            Logger.getLogger(ActualizarPersonalServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CrearClienteServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        }
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -26,9 +26,8 @@ CREATE TABLE usuario(
 
 /*INSERT por defecto*/
 INSERT INTO usuario VALUES (NULL, 'admin', AES_ENCRYPT('admin',666), 1, 1);
-INSERT INTO usuario VALUES (NULL, 'Vendedor1', AES_ENCRYPT('admin',666), 2, 1);
+INSERT INTO usuario VALUES (NULL, 'Luis', AES_ENCRYPT('123',666), 2, 1);
 
-select * from usuario;
 
 CREATE TABLE tipoPersonal (
 	tipoPersonal_id INT AUTO_INCREMENT,
@@ -55,18 +54,18 @@ CREATE TABLE personal (
 	FOREIGN KEY(personal_usuario) REFERENCES usuario(usuario_id)
 );
 
-
+INSERT INTO personal VALUES(NULL, 'admin','Admin','Admin','2','1',1);
 INSERT INTO personal VALUES(NULL, '11-1','Luis','Martinez','2','2',1);
 
 /*Esta tabla almacena a los clientes que decidan registrarse para recibir promociones.*/
 CREATE TABLE cliente (
-	cliente_fono VARCHAR(15),
+	cliente_fono VARCHAR(50),
 	cliente_nombre VARCHAR(50),
 	cliente_apellido VARCHAR(100),
-	cliente_nacimiento DATE,
 	cliente_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(cliente_fono)
 );
+INSERT INTO cliente VALUES('555','555','555',1);
 
 /*Categoría a la cual pertenece el producto, brebaje, postre, etc.*/
 CREATE TABLE tipoProducto (
@@ -92,7 +91,7 @@ CREATE TABLE producto (
 	FOREIGN KEY(producto_tipo) REFERENCES tipoProducto(tipoProducto_id)
 );
 
-select * from producto;
+INSERT INTO producto VALUES(NULL,'nada','0','1',1);
 
 /*Contiene el nombre de la promoción y el descuento que tiene la promo.*/
 CREATE TABLE promocion (
@@ -102,7 +101,9 @@ CREATE TABLE promocion (
 	promocion_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(promocion_id)
 );
-select * from promocion;
+
+INSERT INTO promocion VALUES(NULL,'nada','0',1);
+
 /*Tabla generada por relacion muchos a muchos entre producto y promocion.*/
 CREATE TABLE productoPromocion (
 	productoPromocion_id INT AUTO_INCREMENT,
@@ -138,3 +139,20 @@ CREATE TABLE productoVenta (
 	FOREIGN KEY(productoVenta_venta) REFERENCES venta(venta_id)
 );
 
+CREATE TABLE PromocionVenta (
+	productoVenta_id INT AUTO_INCREMENT,
+	productoVenta_promocion INT,
+	productoVenta_venta INT,
+	productoVenta_estado BIT, /*1.Activo 0.Inactivo*/
+	PRIMARY KEY(productoVenta_id),
+	FOREIGN KEY(productoVenta_promocion) REFERENCES promocion(promocion_id),
+	FOREIGN KEY(productoVenta_venta) REFERENCES venta(venta_id)
+);
+
+SELECT * FROM usuario;
+SELECT * FROM personal;
+SELECT * FROM tipoProducto;
+SELECT * FROM cliente;
+SELECT * FROM producto;
+SELECT * FROM promocion;
+SELECT * FROM venta;

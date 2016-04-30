@@ -59,6 +59,8 @@
                         </tr>
                         <%
                         for(Producto p : productos){
+                            if(p.id==1){
+                            }else{
                             out.println("<tr>"); 
                                 out.println("<td>"+p.getId()+"</td>");
                                 out.println("<td>"+p.getNombre()+"</td>");
@@ -67,6 +69,7 @@
                                 //out.println("<td>"+tp.getNombre()+"</td>");
                                 out.println("<td><a href='confirmarEliminar.jsp?e="+p.getId()+"'>Eliminar</a></td>");
                             out.println("</tr>");
+                            }
                         }
                         %>
                     </table>
