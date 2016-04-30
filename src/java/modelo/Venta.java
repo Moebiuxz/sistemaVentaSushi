@@ -1,22 +1,26 @@
 package modelo;
 
+import java.sql.Date;
+
 public class Venta {
 
     public int id;
-    public String fecha;
+    public Date fecha;
     public int personal;
     public String cliente;
+    public int total;
     public int estado; /*1.Activo 2.Inactivo*/
 
 
     public Venta() {
     }
 
-    public Venta(int id, String fecha, int personal, String cliente, int estado) {
+    public Venta(int id, Date fecha, int personal, String cliente, int total, int estado) {
         this.id = id;
         this.fecha = fecha;
         this.personal = personal;
         this.cliente = cliente;
+        this.total = total;
         this.estado = estado;
     }
 
@@ -28,11 +32,11 @@ public class Venta {
         this.id = id;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -52,6 +56,14 @@ public class Venta {
         this.cliente = cliente;
     }
 
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
     public int getEstado() {
         return estado;
     }
@@ -60,4 +72,6 @@ public class Venta {
         this.estado = estado;
     }
 
+    
+    
 }

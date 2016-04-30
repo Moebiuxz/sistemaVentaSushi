@@ -75,7 +75,9 @@
                                     List<Producto> produ = new ArrayList<>();
                                     produ = d.getProductos();
                                     for (Producto p : produ) {
-                                        out.println("<option value='" + p.getId() + "'>" + p.getNombre() + "</option>");
+                                        if(p.id != 1){
+                                            out.println("<option value='" + p.getId() + "'>" + p.getNombre() + "</option>");
+                                        }
                                     }
                                 %>
                             </select>

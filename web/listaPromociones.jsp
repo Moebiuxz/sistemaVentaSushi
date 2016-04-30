@@ -29,7 +29,8 @@
             <div class="row" >
                 <h2>Lista de Promociones</h2>
                 <div class="col-md-10" >
-                    <%                        promociones = d.getPromociones();
+                    <%                        
+                    promociones = d.getPromociones();
                         for (Promocion p : promociones) {
                             if (p.id == 1) {
                             } else {

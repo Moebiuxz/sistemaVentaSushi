@@ -22,7 +22,7 @@ Usuario us = (Usuario) request.getSession().getAttribute("usuario");
                 <div class="col-md-5" >
                     <form action="crearCliente.do" method="post">
                         <h4>Crear Cliente</h4><br/>
-                        <input class="form-control" name="txtFono" value="<%out.println(fono);%>"  type="text" disabled/><br/>
+                        <input class="form-control" name="txtFono" value="<%out.println(fono);%>"  type="text" readonly/><br/>
                         <input class="form-control" name="txtNombre" placeholder="Nombre: " type="text" required="required"/><br/>
                         <input class="form-control" name="txtApellido" placeholder="Apellido: " type="text" required="required"/><br/>
                         <input class="btn btn-primary" name="btnCrearCliente" type="submit" value="Crear Cliente"><br/><br/>

@@ -3,7 +3,9 @@ package controlador;
 import bd.DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,40 +14,65 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.Personal;
 import modelo.Producto;
-import modelo.ProductoPromocion;
+import modelo.ProductoVenta;
 import modelo.Promocion;
+import modelo.PromocionVenta;
+import modelo.Usuario;
+import modelo.Venta;
 import otros.PromEstatica;
 
-@WebServlet(name = "RegistrarPromocionServlet", urlPatterns = {"/registrarPromocion.do"})
-public class RegistrarPromocionServlet extends HttpServlet {
+@WebServlet(name = "RegistrarVentaServlet", urlPatterns = {"/registrarVenta.do"})
+public class RegistrarVentaServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             response.setContentType("text/html;charset=UTF-8");
             
+            Usuario us = (Usuario) request.getSession().getAttribute("usuario");
+            String total = request.getParameter("tot");
+            
+            Date fecha = Date.valueOf(LocalDate.now());
             DAO d = new DAO();
             
-            Promocion prom = new Promocion(1, PromEstatica.NOMBRE, Integer.parseInt(PromEstatica.DESCUENTO), 1);
-            d.crearPromocion(prom);
+            Personal peer = d.getPersonalSegunIdUsuario(us.id);
             
-            Promocion promo = d.getUltimaPromocion();
+            Venta v = new Venta(1, fecha, peer.id, PromEstatica.FONO_CLIENTE, Integer.parseInt(total), 1);
+            d.crearVenta(v);
+            Venta ven = d.getUltimaVenta();
             
-            for(Producto p : PromEstatica.LI){
-                ProductoPromocion pp = new ProductoPromocion(1, promo.id, p.id, 1);
-                d.crearProductoPromocion(pp);
+            if(PromEstatica.LIPRO.size() != 0){
+                for(Producto pv : PromEstatica.LIPRO){
+                    ProductoVenta p = new ProductoVenta(1, pv.id, ven.id, 1);
+                    d.crearProductoVenta(p);
+                }
+            }else{
+                ProductoVenta pv = new ProductoVenta(1, 1, ven.id, 1);
+                d.crearProductoVenta(pv);
             }
             
-            PromEstatica.DESCUENTO = null;
-            PromEstatica.LI = new ArrayList<>();
-            PromEstatica.NOMBRE = null;
+            if(PromEstatica.LIPP.size() != 0){
+                for(Promocion pv : PromEstatica.LIPP){
+                    PromocionVenta p = new PromocionVenta(1, pv.id, ven.id, 1);
+                    d.crearPromocionVenta(p);
+                }
+            }else{
+                PromocionVenta pv = new PromocionVenta(1, 1, ven.id, 1);
+                d.crearPromocionVenta(pv);
+            }
             
+            PromEstatica.FONO_CLIENTE = null;
+            PromEstatica.ESTA_FONO = false;
+            PromEstatica.LIPRO = new ArrayList<>();
+            PromEstatica.LIPP = new ArrayList<>();
             
             response.sendRedirect("menuUsuario.jsp");
             
+            
         } catch (SQLException ex) {
-            Logger.getLogger(RegistrarPromocionServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RegistrarVentaServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         

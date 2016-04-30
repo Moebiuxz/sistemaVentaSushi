@@ -122,6 +122,7 @@ CREATE TABLE venta(
 	venta_fecha DATETIME,
 	venta_personal INT,
 	venta_cliente VARCHAR(15),
+        venta_total INT,
 	venta_estado BIT, /*1.Activo 0.Inactivo*/
 	PRIMARY KEY(venta_id),
 	FOREIGN KEY(venta_personal) REFERENCES personal(personal_id),
@@ -139,7 +140,7 @@ CREATE TABLE productoVenta (
 	FOREIGN KEY(productoVenta_venta) REFERENCES venta(venta_id)
 );
 
-CREATE TABLE PromocionVenta (
+CREATE TABLE promocionVenta (
 	productoVenta_id INT AUTO_INCREMENT,
 	productoVenta_promocion INT,
 	productoVenta_venta INT,
@@ -156,3 +157,5 @@ SELECT * FROM cliente;
 SELECT * FROM producto;
 SELECT * FROM promocion;
 SELECT * FROM venta;
+SELECT * FROM promocionVenta;
+SELECT * FROM productoVenta;

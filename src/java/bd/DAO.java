@@ -9,6 +9,7 @@ import modelo.Producto;
 import modelo.ProductoPromocion;
 import modelo.ProductoVenta;
 import modelo.Promocion;
+import modelo.PromocionVenta;
 import modelo.Respaldo;
 import modelo.TipoPersonal;
 import modelo.TipoProducto;
@@ -397,6 +398,25 @@ public class DAO {
     public Personal getPersonalSegunRutUsuario(String rutUsu) throws SQLException {
         Personal per = null;
         sql = "SELECT * FROM personal WHERE personal_rut = '" + rutUsu + "'";
+        C.resultado = C.ejecutarSelect(sql);
+        if (C.resultado.next()) {
+            per = new Personal(
+                    C.resultado.getInt(1),
+                    C.resultado.getString(2),
+                    C.resultado.getString(3),
+                    C.resultado.getString(4),
+                    C.resultado.getInt(5),
+                    C.resultado.getInt(6),
+                    C.resultado.getInt(7)
+            );
+        }
+        C.sentencia.close();
+        return per;
+    }
+    
+    public Personal getPersonalSegunIdUsuario(int idUsu) throws SQLException {
+        Personal per = null;
+        sql = "SELECT * FROM personal WHERE personal_usuario = '" + idUsu + "'";
         C.resultado = C.ejecutarSelect(sql);
         if (C.resultado.next()) {
             per = new Personal(
@@ -823,6 +843,21 @@ public class DAO {
         return promociones;
     }
     
+    public Promocion getPromocionSegunId(String id) throws SQLException {
+        sql = "select * from promocion where promocion_id = '" + id + "'";
+        C.resultado = C.ejecutarSelect(sql);
+        Promocion p = null;
+        if (C.resultado.next()) {
+            p = new Promocion();
+            p.setId(C.resultado.getInt(1));
+            p.setNombre(C.resultado.getString(2));
+            p.setDescuento(C.resultado.getInt(3));
+            p.setEstado(C.resultado.getInt(4));
+        }
+        C.sentencia.close();
+        return p;
+    }
+    
     public void eliminarPromocion(String id) throws SQLException{
          sql = "UPDATE promocion SET promocion_estado = 0 WHERE promocion_id = "+id+"";
          C.ejecutar(sql);
@@ -876,7 +911,7 @@ public class DAO {
      */
     
         public void crearVenta(Venta v) throws SQLException {
-        sql = "insert into venta values(null,'" + v.getFecha() + "','" + v.getPersonal() + "','" + v.getCliente() + "',1);";
+        sql = "insert into venta values(null,'" + v.fecha + "','" + v.personal + "','" + v.cliente + "','"+v.total+"',1);";
         C.ejecutar(sql);
     }
 
@@ -887,10 +922,11 @@ public class DAO {
         if (C.resultado.next()) {
             v = new Venta();
             v.setId(C.resultado.getInt(1));
-            v.setFecha(C.resultado.getString(2));
+            v.setFecha(C.resultado.getDate(2));
             v.setPersonal(C.resultado.getInt(3));
             v.setCliente(C.resultado.getString(4));
             v.setEstado(C.resultado.getInt(5));
+            v.setEstado(C.resultado.getInt(6));
         }
         C.sentencia.close();
         return v;
@@ -907,14 +943,33 @@ public class DAO {
         while (C.resultado.next()) {
             v = new Venta();
             v.setId(C.resultado.getInt(1));
-            v.setFecha(C.resultado.getString(2));
+            v.setFecha(C.resultado.getDate(2));
             v.setPersonal(C.resultado.getInt(3));
             v.setCliente(C.resultado.getString(4));
             v.setEstado(C.resultado.getInt(5));
+            v.setEstado(C.resultado.getInt(6));
             lv.add(v);
         }
         C.sentencia.close();
         return lv;
+    }
+    
+    public Venta getUltimaVenta() throws SQLException {
+        Venta ven = null;
+        sql = "SELECT * FROM venta";
+        C.resultado = C.ejecutarSelect(sql);
+        while (C.resultado.next()) {
+            ven = new Venta(
+                    C.resultado.getInt(1),
+                    C.resultado.getDate(2),
+                    C.resultado.getInt(3),
+                    C.resultado.getString(4),
+                    C.resultado.getInt(5),
+                    C.resultado.getInt(6)
+            );
+        }
+        C.sentencia.close();
+        return ven;
     }
 
     public void desactivarVenta(int id) throws SQLException {
@@ -946,10 +1001,11 @@ public class DAO {
         while (C.resultado.next()) {
             v = new Venta();
             v.setId(C.resultado.getInt(1));
-            v.setFecha(C.resultado.getString(2));
+            v.setFecha(C.resultado.getDate(2));
             v.setPersonal(C.resultado.getInt(3));
             v.setCliente(C.resultado.getString(4));
             v.setEstado(C.resultado.getInt(5));
+            v.setEstado(C.resultado.getInt(6));
             lv.add(v);
         }
         C.sentencia.close();
@@ -968,7 +1024,7 @@ public class DAO {
                 + "null,"
                 + "'" + pv.getProducto() + "',"
                 + "'" + pv.getVenta() + "',"
-                + "'" + pv.getEstado() + "'"
+                + "1"
                 + ");";
         C.ejecutar(sql);
     }
@@ -1049,11 +1105,24 @@ public class DAO {
     /*
      Fin Métodos productoVenta
      */
-    
+    //========================================================================
     /*
-     Fin Métodos venta
+     Inicio Métodos promocionVenta
      */
     
+    public void crearPromocionVenta(PromocionVenta pv) throws SQLException {
+        sql = "insert into promocionVenta values("
+                + "null,"
+                + "'" + pv.getPromocion() + "',"
+                + "'" + pv.getVenta() + "',"
+                + "1"
+                + ");";
+        C.ejecutar(sql);
+    }
+    
+    /*
+     Fin Métodos promocionVenta
+     */
     //========================================================================
     
     /*
