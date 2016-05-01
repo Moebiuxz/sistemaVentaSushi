@@ -11,6 +11,7 @@
     String crearProducto = "";
     String crearPromocion = "";
     String listaPromocion = "";
+    String listaVentas = "";
     String respaldo = "";
 
     if (StaticPage.PAGINA == EnumPaginas.MENU) {
@@ -27,6 +28,8 @@
         crearPromocion = "active";
     } else if (StaticPage.PAGINA == EnumPaginas.LISTA_PROMOCION) {
         listaPromocion = "active";
+    } else if (StaticPage.PAGINA == EnumPaginas.LISTA_VENTAS) {
+        listaVentas = "active";
     } else if (StaticPage.PAGINA == EnumPaginas.RESPALDO) {
         respaldo = "active";
     }
@@ -57,6 +60,7 @@
                         out.println("<li class='" + listarProductos + "'><a href='listarProducto.jsp'>Listar Productos</a></li>");
                         out.println("<li class='" + crearPromocion + "'><a href='crearPromocion.jsp'>Crear Promocion</a></li>");
                         out.println("<li class='" + listaPromocion + "'><a href='listaPromociones.jsp'>Listar Promociones</a></li>");
+                        out.println("<li class='" + listaVentas + "'><a href='listaVentas.jsp'>Listar Ventas</a></li>");
                         out.println("<li class='" + respaldo + "'><a href='respaldo.jsp'>Respaldar</a></li>");
                     } else if (u != null && u.getTipoUsuario() == 2) {
 
