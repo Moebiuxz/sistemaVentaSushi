@@ -150,6 +150,15 @@ CREATE TABLE promocionVenta (
 	FOREIGN KEY(productoVenta_venta) REFERENCES venta(venta_id)
 );
 
+CREATE TABLE respaldo (
+    respaldo_id INT AUTO_INCREMENT,
+    respaldo_fecha DATE,
+    respaldo_hora TIME,
+    respaldo_tipo VARCHAR(100),
+    PRIMARY KEY(respaldo_id)
+);
+
+
 SELECT * FROM usuario;
 SELECT * FROM personal;
 SELECT * FROM tipoProducto;
@@ -159,3 +168,4 @@ SELECT * FROM promocion;
 SELECT * FROM venta;
 SELECT * FROM promocionVenta;
 SELECT * FROM productoVenta;
+
