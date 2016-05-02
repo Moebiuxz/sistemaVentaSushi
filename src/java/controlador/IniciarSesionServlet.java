@@ -39,10 +39,10 @@ public class IniciarSesionServlet extends HttpServlet {
                         response.sendRedirect("menuUsuario.jsp");
                     }
                 } else {
-                    response.sendRedirect("index.jsp?m=1");
+                    response.sendRedirect("iniciarSesion.jsp?m=1");
                 }
             } else {
-                response.sendRedirect("index.jsp?m=1");
+                response.sendRedirect("iniciarSesion.jsp?m=1");
             }
 
         } catch (Exception ex) {

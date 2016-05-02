@@ -2,10 +2,14 @@ package controlador;
 
 import bd.DAO;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,13 +30,12 @@ public class RespaldarServlet extends HttpServlet {
 
         /* Obtener fecha local */
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	 
-	   Calendar cal = Calendar.getInstance();
-           String fechaHora = dateFormat.format(cal.getTime());
-           String fix[] = fechaHora.split(" ");
+
+        Calendar cal = Calendar.getInstance();
+        String fechaHora = dateFormat.format(cal.getTime());
+        String fix[] = fechaHora.split(" ");
         /* Obtener fecha local */
-        
-        
+
         int BUFFER = 10485760;
         //para guardar en memmoria
         StringBuffer temp = null;
@@ -43,26 +46,41 @@ public class RespaldarServlet extends HttpServlet {
         try {
             //sentencia para crear el BackUp
             Process run = Runtime.getRuntime().exec(
-                    "C:\\Program Files\\MySQL\\MySQLServer5.7\\bin\\mysqldump --host=localhost"
-                    + " --user=root" + " --password=1234"
+                    "C:\\wamp64\\bin\\mysql\\mysql5.7.9\\bin\\mysqldump --host=localhost"
+                    + " --user=root" + " --password="
                     + " --compact --complete-insert --extended-insert --skip-quote-names"
                     + " --skip-comments --skip-triggers " + "bd_sushi");
 
             //se guarda en memoria el backup
-            InputStream in = run.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            temp = new StringBuffer();
-            int count;
-            char[] cbuf = new char[BUFFER];
-            while ((count = br.read(cbuf, 0, BUFFER)) != -1) {
-                temp.append(cbuf, 0, count);
+//            InputStream in = run.getInputStream();
+//            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+//            temp = new StringBuffer();
+//            int count;
+//            char[] cbuf = new char[BUFFER];
+//            while ((count = br.read(cbuf, 0, BUFFER)) != -1) {
+//                temp.append(cbuf, 0, count);
+//            }
+//            br.close();
+//            in.close();
+//            /* se crea y escribe el archivo SQL */
+//            System.out.println (new File (".").getAbsolutePath ());
+//            fichero = new FileWriter("C:\\respaldo_"+fix[0].replace("/", "")+"_"+fix[1].replace(":", "")+".sql");
+//            //fichero = new FileWriter("C:\\Users\\Álvaro\\Documents\\NetBeansProjects\\sistemaVentaSushi\\respaldos\\respaldo_"+fix[0].replace("/", "")+"_"+fix[1].replace(":", "")+".sql");
+//            //fichero = new FileWriter("C:\\Users\\Álvaro\\Documents\\NetBeansProjects\\sistemaVentaSushi\\respaldo_"+fix[0].replace("/", "")+"_"+fix[1].replace(":", "")+".sql");
+//            pw = new PrintWriter(fichero);
+//            pw.println(temp.toString());
+            InputStream is = run.getInputStream();
+            FileOutputStream fos = new FileOutputStream("backup_pruebas.sql");
+            byte[] buffer = new byte[1000];
+
+            int leido = is.read(buffer);
+            while (leido > 0) {
+                fos.write(buffer, 0, leido);
+                leido = is.read(buffer);
             }
-            br.close();
-            in.close();
-            /* se crea y escribe el archivo SQL */
-            fichero = new FileWriter("C:\\Users\\Álvaro\\Desktop\\code\\respaldo_"+fix[0].replace("/", "")+"_"+fix[1].replace(":", "")+".sql");
-            pw = new PrintWriter(fichero);
-            pw.println(temp.toString());
+
+            fos.close();
+
             Respaldo r = new Respaldo(0, fix[0], fix[1]);
             DAO d = new DAO();
             d.crearRespaldo(r);
@@ -78,6 +96,7 @@ public class RespaldarServlet extends HttpServlet {
                 e2.printStackTrace();
             }
         }
+
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

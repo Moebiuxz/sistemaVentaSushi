@@ -36,7 +36,7 @@ public class RespaldoPersonalizadoServlet extends HttpServlet {
                 r.setFecha(fix[0]);
                 r.setTipo("Diario");
                 DAO d = new DAO();
-                d.generarBackUpPersonalizado(r);
+                //d.generarBackUpPersonalizado(r);
 
             } catch (SQLException ex) {
                 Logger.getLogger(RespaldoPersonalizadoServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -47,7 +47,7 @@ public class RespaldoPersonalizadoServlet extends HttpServlet {
                 r.setFecha(fix[0]);
                 r.setTipo("Mensual");
                 DAO d = new DAO();
-                d.generarBackUpPersonalizado(r);
+                //d.generarBackUpPersonalizado(r);
             } catch (SQLException ex) {
                 Logger.getLogger(RespaldoPersonalizadoServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

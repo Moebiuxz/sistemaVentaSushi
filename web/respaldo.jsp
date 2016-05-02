@@ -36,12 +36,13 @@
                             <th>Hora</th>
                             <th>Restaurar</th>
                         </tr>
-                        <%                            for (Respaldo r : respaldos) {
+                        <%                            
+                            for (Respaldo r : respaldos) {
                                 out.println("<tr>");
                                 out.println("<td>" + r.getId() + "</td>");
                                 out.println("<td>" + r.getFecha() + "</td>");
                                 out.println("<td>" + r.getHora() + "</td>");
-                                out.println("<td><a href='confirmarRestauracion.jsp?e=" + r.getId() + "'>Restaurar</a></td>");
+                                out.println("<td><a href='restaurarDB.jsp?d=" + r.getId() + "'>Restaurar</a></td>");
                                 out.println("</tr>");
                             }
                         %>

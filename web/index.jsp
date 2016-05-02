@@ -1,49 +1,27 @@
-<%-- 
-    Document   : index
-    Created on : 21-abr-2016, 6:01:52
-    Author     : Álvaro
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Inicio de Sesión</title>
-        <link rel="stylesheet" href="css/style_InicioSesion.css" type="text/css"/>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
+        <title>Portada</title>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6 col-md-4 col-md-offset-4">
-                    <h1 class="text-center login-title">Inicie sesión antes de continuar</h1>
-                    <div class="account-wall">
-                        <img class="profile-img" src="images/icon_login.png"
-                             alt="">
-                        <form class="form-signin" action="iniciarSesion.do" method="POST">
-                            <input type="text" name="txtRut" class="form-control" placeholder="Usuario:" required autofocus>
-                            <input type="password" name="txtPass" class="form-control" placeholder="Clave:" required>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">
-                                Ingresar</button>
-                            <label class="checkbox pull-left">
-                                <input type="checkbox" value="recordar">
-                                Recuerdame
-                            </label>
-                            <span class="clearfix"></span>
-                        </form>
+        <div class="cover"> 
+            <div class="container"> 
+                <div class="row"> 
+                    <div class="col-md-12 text-center"> 
+                        <img src="images/logo.png" class="center-block img-responsive">
+                        <h1 class="text-danger">Sistema SushiVip</h1> 
+                        <p class="text-muted">Para ingresar al sistema presione el botón.</p>
+                        <br><br>
+                        <a href="iniciarSesion.jsp" class="btn btn-danger btn-lg">Ingresar<br></a> 
                     </div>
-                    <!--  
-                    <a href="vista_registroUsuario.html" class="text-center new-account">Crear cuenta </a>
-                    -->  
                 </div>
             </div>
-            <%
-                String m = request.getParameter("m");
-                if (m != null) {
-                    out.println("<div class='alert alert-success' role='alert'>Usuario o Contraseña Incorrecta</div>");
-                }
-            %>
         </div>
     </body>
 </html>
