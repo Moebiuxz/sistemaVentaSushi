@@ -1011,6 +1011,44 @@ public class DAO {
         C.sentencia.close();
         return lv;
     }
+    
+    public List<Venta> getVentasPorFechaUnica(String fecha) throws SQLException {
+        sql = "SELECT * FROM venta WHERE venta_fecha = '"+fecha+"';";
+        C.resultado = C.ejecutarSelect(sql);
+        Venta v;
+        List<Venta> lv = new ArrayList<>();
+        while (C.resultado.next()) {
+            v = new Venta();
+            v.setId(C.resultado.getInt(1));
+            v.setFecha(C.resultado.getDate(2));
+            v.setPersonal(C.resultado.getInt(3));
+            v.setCliente(C.resultado.getString(4));
+            v.setTotal(C.resultado.getInt(5));
+            v.setEstado(C.resultado.getInt(6));
+            lv.add(v);
+        }
+        C.sentencia.close();
+        return lv;
+    }
+    
+    public List<Venta> getVentasPorRangoDeFecha(String fechaDesde, String fechaHasta) throws SQLException {
+        sql = "SELECT * FROM venta WHERE venta_fecha BETWEEN '"+fechaDesde+"' AND '"+fechaHasta+"'";
+        C.resultado = C.ejecutarSelect(sql);
+        Venta v;
+        List<Venta> lv = new ArrayList<>();
+        while (C.resultado.next()) {
+            v = new Venta();
+            v.setId(C.resultado.getInt(1));
+            v.setFecha(C.resultado.getDate(2));
+            v.setPersonal(C.resultado.getInt(3));
+            v.setCliente(C.resultado.getString(4));
+            v.setTotal(C.resultado.getInt(5));
+            v.setEstado(C.resultado.getInt(6));
+            lv.add(v);
+        }
+        C.sentencia.close();
+        return lv;
+    }
 
     /*
      Fin Métodos venta
@@ -1190,3 +1228,4 @@ public class DAO {
      Fin Métodos respaldo
      */
 }
+

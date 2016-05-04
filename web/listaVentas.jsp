@@ -11,13 +11,27 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    Usuario us = (Usuario)request.getSession().getAttribute("usuario");
-    if(us == null){
+    Usuario us = (Usuario) request.getSession().getAttribute("usuario");
+    if (us == null) {
         response.sendRedirect("index.jsp");
     }
     StaticPage.PAGINA = EnumPaginas.LISTA_VENTAS;
-        DAO d = new DAO();
+    DAO d = new DAO();
     List<Venta> ventas = new ArrayList<>();
+
+    String fechaUnica = request.getParameter("txtBuscarFechaUnica");
+    String fechaInicio = request.getParameter("txtfechaInicio");
+    String fechaFin = request.getParameter("txtfechaFin");
+
+    if (fechaUnica != null) {
+        ventas = d.getVentasPorFechaUnica(fechaUnica);
+    } else if (fechaInicio != null || fechaFin != null) {
+        ventas = d.getVentasPorRangoDeFecha(fechaInicio, fechaFin);
+    } else {
+        ventas = d.getVentas();
+    }
+
+
 %>
 
 <html>
@@ -34,18 +48,34 @@
         </header>
         <div class="container" >
             <div class="row" >
-                <div class="col-md-8" >
-                    <div class="col-md-6">
-                    <h2>Buscar Personal</h2>
-                    <form action="menuAdmin.jsp" method="POST">
-                        <label for="producto">Buscar:</label>
-                        <div class="form-group">
-                            <input name="txtBuscar" type="text" class="form-control" id="nombre" placeholder="Buscar">
-                        </div>
-
-                        <button type="submit" class="btn btn-default pull-right">Buscar</button>
+                <div class="col-md-11" >
+                    <div class="col-md-4">
+                        <h2>Buscar Personal</h2>
+                        <form action="listaVentas.jsp" method="POST">
+                            <label for="producto">Buscar por fecha unica:</label>
+                            <div class="form-group">
+                                <input name="txtBuscarFechaUnica" type="date" class="form-control" id="nombre">
+                            </div>
+                            <a class="btn btn-group" role="button" href="listaVentas.jsp">Mostrar todo</a>
+                            <button type="submit" class="btn btn-default pull-right">Buscar</button>
+                        </form>
                         
-                    </form>
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                        <form action="listaVentas.jsp" method="POST">
+                            <h2></h2>
+                            <label for="producto">Buscar por rango:</label>
+                            <div class="form-group">
+                                <h5>Desde: </h5>
+                                <input name="txtfechaInicio" type="date" class="form-control" id="nombre">
+                                <h5>Hasta: </h5>
+                                <input name="txtfechaFin" type="date" class="form-control" id="nombre">
+                            </div>
+
+                            <button type="submit" class="btn btn-default pull-right">Buscar</button>
+
+                        </form>
                     </div>
                     <div class="col-md-10" >
                         <table class="table table-bordered" style="margin-top: 30px;">
@@ -57,24 +87,25 @@
                                 <th>Total</th>
                                 <th>Ver</th>
                             </tr>
-                            <%
-                                ventas = d.getVentas();
+                            <%                                
+                            int totalTotal = 0;
                                 for (Venta v : ventas) {
                                     Personal per = d.getPersonalPorId(Integer.toString(v.personal));
                                     Cliente cli = d.getClientePorFono(v.cliente);
-                                        out.println("<tr>");
-                                        out.println("<td>" + v.id + "</td>");
-                                        out.println("<td>" + v.fecha + "</td>");
-                                        out.println("<td>" + per.nombre + "</td>");
-                                        out.println("<td> " + cli.nombre +" "+cli.apellido +"</td>");
-                                        out.println("<td>$ " + v.total + "</td>"); 
-                                        out.println("<td><a href=''>Ver Venta</a></td>");
-
-                                        out.println("</tr>");
+                                    out.println("<tr>");
+                                    out.println("<td>" + v.id + "</td>");
+                                    out.println("<td>" + v.fecha + "</td>");
+                                    out.println("<td>" + per.nombre + "</td>");
+                                    out.println("<td> " + cli.nombre + " " + cli.apellido + "</td>");
+                                    out.println("<td>$ " + v.total + "</td>");
+                                    out.println("<td><a href='verVenta.jsp?r="+v.id+"'>Ver Venta</a></td>");
+                                    out.println("</tr>");
+                                    totalTotal = totalTotal + v.total;
                                 }
                                 out.println("<tr>");
+                                out.println("<th colspan='4'>Total vendido</th>");
+                                out.println("<th> $ " + totalTotal + "</th>");
                                 out.println("<th></th>");
-                                out.println("<th>Precio total $</th>");
                                 out.println("</tr>");
                             %>
                         </table>
@@ -83,9 +114,5 @@
                 </div>
             </div>
         </div>
-        
-        
-        
-        
     </body>
 </html>
