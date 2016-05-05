@@ -36,67 +36,29 @@ public class RespaldarServlet extends HttpServlet {
         String fix[] = fechaHora.split(" ");
         /* Obtener fecha local */
 
-        int BUFFER = 10485760;
-        //para guardar en memmoria
-        StringBuffer temp = null;
-        //para guardar el archivo SQL
-        FileWriter fichero = null;
-        PrintWriter pw = null;
+        String executeCmd = "C:\\xampp\\mysql\\bin\\mysqldump -u root -B bd_sushi -r C:\\Users\\Álvaro\\Documents\\NetBeansProjects\\sistemaVentaSushi\\respaldo_" + fix[0].replace("/", "") + "_" + fix[1].replace(":", "") + ".sql";
+        Process runtimeProcess;
 
         try {
-            //sentencia para crear el BackUp
-            Process run = Runtime.getRuntime().exec(
-                    "C:\\wamp64\\bin\\mysql\\mysql5.7.9\\bin\\mysqldump --host=localhost"
-                    + " --user=root" + " --password="
-                    + " --compact --complete-insert --extended-insert --skip-quote-names"
-                    + " --skip-comments --skip-triggers " + "bd_sushi");
+            runtimeProcess = Runtime.getRuntime().exec(new String[]{"cmd.exe", "/c", executeCmd});
 
-            //se guarda en memoria el backup
-//            InputStream in = run.getInputStream();
-//            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//            temp = new StringBuffer();
-//            int count;
-//            char[] cbuf = new char[BUFFER];
-//            while ((count = br.read(cbuf, 0, BUFFER)) != -1) {
-//                temp.append(cbuf, 0, count);
-//            }
-//            br.close();
-//            in.close();
-//            /* se crea y escribe el archivo SQL */
-//            System.out.println (new File (".").getAbsolutePath ());
-//            fichero = new FileWriter("C:\\respaldo_"+fix[0].replace("/", "")+"_"+fix[1].replace(":", "")+".sql");
-//            //fichero = new FileWriter("C:\\Users\\Álvaro\\Documents\\NetBeansProjects\\sistemaVentaSushi\\respaldos\\respaldo_"+fix[0].replace("/", "")+"_"+fix[1].replace(":", "")+".sql");
-//            //fichero = new FileWriter("C:\\Users\\Álvaro\\Documents\\NetBeansProjects\\sistemaVentaSushi\\respaldo_"+fix[0].replace("/", "")+"_"+fix[1].replace(":", "")+".sql");
-//            pw = new PrintWriter(fichero);
-//            pw.println(temp.toString());
-            InputStream is = run.getInputStream();
-            FileOutputStream fos = new FileOutputStream("backup_pruebas.sql");
-            byte[] buffer = new byte[1000];
+            int processComplete = runtimeProcess.waitFor();
 
-            int leido = is.read(buffer);
-            while (leido > 0) {
-                fos.write(buffer, 0, leido);
-                leido = is.read(buffer);
-            }
-
-            fos.close();
+            System.out.println(processComplete);
 
             Respaldo r = new Respaldo(0, fix[0], fix[1]);
             DAO d = new DAO();
             d.crearRespaldo(r);
             response.sendRedirect("respaldo.jsp");
+
+            if (processComplete == 0) {
+                System.out.println("Backup Created Successfully !");
+            } else {
+                System.out.println("Couldn't Create the backup !");
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                if (null != fichero) {
-                    fichero.close();
-                }
-            } catch (Exception e2) {
-                e2.printStackTrace();
-            }
         }
-
     }
 
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
