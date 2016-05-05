@@ -36,6 +36,21 @@
                             <span id="mensaje"></span>
                         </div>
                         <br>
+                        <%                           
+                        if (u.getTipoUsuario() == 1) {
+                        %>
+                        <a href="menuAdmin.jsp" class="btn btn-primary pull-left">
+                            ←Volver
+                        </a>
+                        <%
+                        } else {
+                        %>
+                        <a href="menuUsuario.jsp" class="btn btn-primary pull-left">
+                            ←Volver
+                        </a>
+                        <%
+                            }
+                        %>
                         <input type="submit" class="btn btn-primary pull-right" value="Cambiar Contraseña"/>
                     </form>
                     <br>
