@@ -14,6 +14,7 @@
     String listaVentas = "";
     String reportes = "";
     String respaldo = "";
+    String pass = "";
 
     if (StaticPage.PAGINA == EnumPaginas.MENU) {
         menu = "active";
@@ -35,6 +36,8 @@
         respaldo = "active";
     } else if (StaticPage.PAGINA == EnumPaginas.REPORTES) {
         reportes = "active";
+    } else if (StaticPage.PAGINA == EnumPaginas.PASS) {
+        pass = "active";
     }
 %>
 <!DOCTYPE html>
@@ -66,8 +69,9 @@
                         out.println("<li class='" + listaVentas + "'><a href='listaVentas.jsp'>Listar Ventas</a></li>");
                         out.println("<li class='" + reportes + "'><a href='reportes.jsp'>Reportes</a></li>");
                         out.println("<li class='" + respaldo + "'><a href='respaldo.jsp'>Respaldar</a></li>");
+                        out.println("<li class='" + pass + "'><a href='cambiarPass.jsp'>Cambiar Contraseña</a></li>");
                     } else if (u != null && u.getTipoUsuario() == 2) {
-
+                        out.println("<li class='" + pass + "'><a href='cambiarPass.jsp'>Cambiar Contraseña</a></li>");
                     }
                 %>
 
