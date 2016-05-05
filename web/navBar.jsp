@@ -12,6 +12,7 @@
     String crearPromocion = "";
     String listaPromocion = "";
     String listaVentas = "";
+    String reportes = "";
     String respaldo = "";
 
     if (StaticPage.PAGINA == EnumPaginas.MENU) {
@@ -32,6 +33,8 @@
         listaVentas = "active";
     } else if (StaticPage.PAGINA == EnumPaginas.RESPALDO) {
         respaldo = "active";
+    } else if (StaticPage.PAGINA == EnumPaginas.REPORTES) {
+        reportes = "active";
     }
 %>
 <!DOCTYPE html>
@@ -61,6 +64,7 @@
                         out.println("<li class='" + crearPromocion + "'><a href='crearPromocion.jsp'>Crear Promocion</a></li>");
                         out.println("<li class='" + listaPromocion + "'><a href='listaPromociones.jsp'>Listar Promociones</a></li>");
                         out.println("<li class='" + listaVentas + "'><a href='listaVentas.jsp'>Listar Ventas</a></li>");
+                        out.println("<li class='" + reportes + "'><a href='reportes.jsp'>Reportes</a></li>");
                         out.println("<li class='" + respaldo + "'><a href='respaldo.jsp'>Respaldar</a></li>");
                     } else if (u != null && u.getTipoUsuario() == 2) {
 
