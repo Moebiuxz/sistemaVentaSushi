@@ -9,5 +9,6 @@ public enum EnumPaginas {
     LISTA_PROMOCION,
     LISTA_VENTAS,
     RESPALDO,
-    MENU
+    MENU,
+    PASS
 }
