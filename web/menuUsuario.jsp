@@ -22,7 +22,7 @@
     String opPP = request.getParameter("cboPP");
     String rr = request.getParameter("rr");
     String listaProductos = request.getParameter("lisP");
-    String listaPromocion = request.getParameter("lisPP");
+    String listaPromocionk = request.getParameter("lisPP");
     String eliminarProducto = request.getParameter("elimP");
     String eliminatPromocion = request.getParameter("elimPP");
 
@@ -55,9 +55,9 @@
         PromEstatica.LIPRO.add(pro);
     }
 
-    if (listaPromocion != null) {
+    if (listaPromocionk != null) {
         DAO dd = new DAO();
-        Promocion p = dd.getPromocionSegunId(listaPromocion);
+        Promocion p = dd.getPromocionSegunId(listaPromocionk);
         Promocion pr = new Promocion(p.id, p.nombre, p.descuento, p.estado);
         PromEstatica.LIPP.add(pr);
     }
@@ -90,6 +90,10 @@
         <link rel="icon" type="image/png" href="images/icon.png" />
     </head>
     <body>
+        <header>
+            <%@include file="elimReg.jsp" %>
+            <%@include file="navBar.jsp" %>
+        </header>
         <div class="container" >
             <h1>Menu vendedor: <%out.println(us.nombre);%></h1>
             <div class="row" >
