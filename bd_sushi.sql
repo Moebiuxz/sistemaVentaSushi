@@ -1,7 +1,7 @@
 CREATE DATABASE bd_sushi;
 USE bd_sushi;
 
---DROP DATABASE bd_sushi;
+-- DROP DATABASE bd_sushi;
 
 CREATE TABLE tipoUsuario (
 	tipoUsuario_id INT AUTO_INCREMENT,
