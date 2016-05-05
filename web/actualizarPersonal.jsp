@@ -19,6 +19,7 @@
         <title>Actualizar Personal</title>
         <link rel="stylesheet" href="css/style_InicioSesion.css" type="text/css"/>
         <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="icon" type="image/png" href="images/icon.png" />
     </head>
     <body>
         <header>

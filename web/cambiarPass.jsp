@@ -1,3 +1,4 @@
+<%@page import="bd.DAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -7,6 +8,7 @@
         <link rel="stylesheet" href="css/style_InicioSesion.css" type="text/css"/>
         <link rel="stylesheet" href="css/bootstrap.min.css"/>
         <script src="js/validarPass.js" type="text/javascript"></script>
+        <link rel="icon" type="image/png" href="images/icon.png" />
     </head>
     <body>
         <header>
@@ -19,30 +21,48 @@
                     <h2>
                         Cambiar Contraseña
                     </h2>
-                    <form method="post" action="" name="cambiarPass">
+                    <form method="post" action="cambiarPass.do" name="cambiarPass" autocomplete="off" onpaste="return false">
                         <div class="form-group">
                             <label for="pass">Contraseña Actual: </label>
-                            <input type="password" name="txtPass" class="form-control" id="pass" placeholder="Contraseña Actual"/>
+                            <input type="password" name="txtPass" class="form-control" id="pass" placeholder="Contraseña Actual" required/>
                         </div>
                         <div class="form-group">
                             <label for="passNueva">Nueva Contraseña: </label>
-                            <input type="text" name="txtCambioPass" class="form-control" id="passNueva" placeholder="Nueva Contraseña"/>
+                            <input type="password" name="txtCambioPass" class="form-control" id="passNueva" placeholder="Nueva Contraseña" required/>
                         </div>
                         <div>
                             <label for="passNuevaRepetir">Repetir Contraseña: </label>
-                            <input type="text" name="txtCambioPassRepetir" class="form-control" id="passNuevaRepetir" placeholder="Repetir Contraseña" onkeyup="cambioColor(this.value);"/>
+                            <input type="password" name="txtCambioPassRepetir" class="form-control" id="passNuevaRepetir" placeholder="Repetir Contraseña" onkeyup="cambioColor(this.value);" required/>
                             <span id="mensaje"></span>
                         </div>
                         <br>
                         <input type="submit" class="btn btn-primary pull-right" value="Cambiar Contraseña"/>
                     </form>
+                    <br>
+                    <br>
                     <%
-                    String mensaje = request.getParameter("m");
-                    if(mensaje != null){
-                        if(mensaje == "1"){
-                            
+                        String m = request.getParameter("m");
+                        if (m != null) {
+                            if (m.equals("1")) {
+                    %>
+                    <div class='alert alert-danger alert-dismissable'>
+                        <strong>Error!</strong> Contraseña Actual Erronea.
+                    </div>
+                    <%
+                    } else if (m.equals("2")) {
+                    %>
+                    <div class='alert alert-danger alert-dismissable'>
+                        <strong>Error!</strong> Contraseñas No Coincidentes.
+                    </div>
+                    <%
+                    } else {
+                    %>
+                    <div class='alert alert-success alert-dismissable'>
+                        <strong>Exito!</strong> Contraseña Cambiada Exitosamente.
+                    </div>
+                    <%
+                            }
                         }
-                    }
                     %>
                 </div>
             </div>

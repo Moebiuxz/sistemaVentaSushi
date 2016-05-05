@@ -11,6 +11,7 @@
         <title>Ventas</title>
         <link rel="stylesheet" href="css/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/estilos.css"/>
+        <link rel="icon" type="image/png" href="images/icon.png" />
     </head>
     <body>
         <header>

@@ -204,7 +204,7 @@ public class DAO {
     public void actualizarUsuario(Usuario u) throws SQLException {
         sql = "update usuario set "
                 + "usuario_nombre = '" + u.getNombre() + "', "
-                + "usuario_clave = '" + u.getPassword() + "', "
+                + "usuario_clave = AES_ENCRYPT('" + u.getPassword() + "',666), "
                 + "usuario_tipo = '" + u.getTipoUsuario() + "', "
                 + "usuario_estado = " + u.getEstado() + " "
                 + "where "
@@ -257,6 +257,17 @@ public class DAO {
         }
         C.sentencia.close();
         return lu;
+    }
+    
+    public String getPasswordDec(int id) throws SQLException{
+        sql = "select AES_DECRYPT(usuario_clave,'666') from usuario where usuario_id = '"+id+"';";
+        C.resultado = C.ejecutarSelect(sql);
+        String pass = null;
+        if(C.resultado.next()){
+            pass = C.resultado.getString(1);
+        }
+        C.sentencia.close();
+        return pass;
     }
 
     /*

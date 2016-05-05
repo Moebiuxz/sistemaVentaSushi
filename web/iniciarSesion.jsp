@@ -10,6 +10,7 @@
               rel="stylesheet" type="text/css">
         <link href="http://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css"
               rel="stylesheet" type="text/css">
+        <link rel="icon" type="image/png" href="images/icon.png" />
     </head>
     <body>
         <div class="section">

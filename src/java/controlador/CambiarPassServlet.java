@@ -17,32 +17,33 @@ public class CambiarPassServlet extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
-        String passActual = request.getParameter("txtPass");
-        String passNueva = request.getParameter("txtCambioPass");
-        String passRepetir = request.getParameter("txtCambioPassRepetir");
-        
-        Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-        
-        if(u.getPassword().equals(passActual)){
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            
+            String passActual = request.getParameter("txtPass");
+            String passNueva = request.getParameter("txtCambioPass");
+            String passRepetir = request.getParameter("txtCambioPassRepetir");
+            
+            Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+            DAO d = new DAO();
+            
+            if(d.getPasswordDec(u.getId()).equals(passActual)){
             if(passNueva.equals(passRepetir)){
-                try {
-                    DAO d = new DAO();
-                    u.setNombre(u.getNombre());
-                    u.setTipoUsuario(u.getTipoUsuario());
-                    u.setEstado(u.getEstado());
-                    u.setPassword(passNueva);
-                    d.actualizarUsuario(u);
-                    response.sendRedirect("cambiarPass.jsp?m=3");
-                } catch (SQLException ex) {
-                    Logger.getLogger(CambiarPassServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                u.setNombre(u.getNombre());
+                u.setTipoUsuario(u.getTipoUsuario());
+                u.setEstado(u.getEstado());
+                u.setPassword(passNueva);
+                d.actualizarUsuario(u);
+                response.sendRedirect("cambiarPass.jsp?m=3");
+                
             }else{
                 response.sendRedirect("cambiarPass.jsp?m=2");
             }
         }else{
-            response.sendRedirect("cambiarPass.jsp?m=1");
+                response.sendRedirect("cambiarPass.jsp?m=1");
+                }
+        } catch (SQLException ex) {
+            Logger.getLogger(CambiarPassServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

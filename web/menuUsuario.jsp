@@ -87,6 +87,7 @@
         <title>Menu Usuario</title>
         <link rel="stylesheet" href="css/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/estilos.css"/>
+        <link rel="icon" type="image/png" href="images/icon.png" />
     </head>
     <body>
         <div class="container" >
