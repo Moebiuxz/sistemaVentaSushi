@@ -43,7 +43,7 @@
                                 out.println("<td>" + r.getId() + "</td>");
                                 out.println("<td>" + r.getFecha() + "</td>");
                                 out.println("<td>" + r.getHora() + "</td>");
-                                out.println("<td><a href='restaurarDB.jsp?d=" + r.getId() + "'>Restaurar</a></td>");
+                                out.println("<td><a href='confirmarRestauracion.jsp?d=" + r.getId() + "'>Restaurar</a></td>");
                                 out.println("</tr>");
                             }
                         %>

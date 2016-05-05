@@ -32,7 +32,7 @@
                     <form action="actualizarPersonal.do" method="POST">
                         <div class="form-group">
                             <label for="nombre">ID:</label>
-                            <input name="txtId" type="text" class="form-control" value="<%=id%>" disabled>
+                            <input name="txtId" type="text" class="form-control" value="<%=id%>" readonly="readonly">
                         </div>
                         <div class="form-group">
                             <label for="nombre">Nombre:</label>
